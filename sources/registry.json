@@ -1,0 +1,227 @@
+{
+  "schemaVersion": "1.1.0",
+  "lastUpdated": "2026-11-14",
+  "sources": [
+    {
+      "id": "src-ms-csharp-classes",
+      "title": "Classes, structs, and records in C# (S01)",
+      "authorOrOrg": "Microsoft Learn (.NET Docs)",
+      "url": "https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/object-oriented/",
+      "category": "domain",
+      "topics": [
+        "01-classes-and-objects",
+        "02-encapsulation",
+        "03-inheritance-and-composition",
+        "05-abstract-class-and-interface"
+      ],
+      "readDate": "2026-11-14",
+      "readMethod": "Node fetch HTTP 200 擷取並完整閱讀正文",
+      "status": "ingested",
+      "notes": "官方 C# 物件導向總覽，明確定義藍圖與物件記憶體配置、成員類型、存取修飾詞（預設 private）及 class/struct/record 差異。"
+    },
+    {
+      "id": "src-ms-csharp-inheritance",
+      "title": "Object-oriented programming - inheritance - C# (S02)",
+      "authorOrOrg": "Microsoft Learn (.NET Docs)",
+      "url": "https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/object-oriented/inheritance",
+      "category": "domain",
+      "topics": [
+        "03-inheritance-and-composition",
+        "04-polymorphism",
+        "05-abstract-class-and-interface"
+      ],
+      "readDate": "2026-11-14",
+      "readMethod": "Node fetch HTTP 200 擷取並完整閱讀正文",
+      "status": "ingested",
+      "notes": "說明 C# 單一類別繼承、衍生類別不繼承建構式與解構子、abstract/virtual/sealed/new 隱藏與 WorkItem/ChangeRequest 案例。"
+    },
+    {
+      "id": "src-ms-csharp-polymorphism",
+      "title": "Polymorphism - C# (S03)",
+      "authorOrOrg": "Microsoft Learn (.NET Docs)",
+      "url": "https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/object-oriented/polymorphism",
+      "category": "domain",
+      "topics": [
+        "04-polymorphism"
+      ],
+      "readDate": "2026-11-14",
+      "readMethod": "Node fetch HTTP 200 擷取並完整閱讀正文",
+      "status": "ingested",
+      "notes": "釐清宣告型別與執行期實際型別之差異、CLR 虛擬方法動態分派（override）、new 方法隱藏與 sealed override。"
+    },
+    {
+      "id": "src-ms-csharp-interfaces",
+      "title": "Interfaces - define behavior for multiple types - C# (S04)",
+      "authorOrOrg": "Microsoft Learn (.NET Docs)",
+      "url": "https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/types/interfaces",
+      "category": "domain",
+      "topics": [
+        "05-abstract-class-and-interface",
+        "06-coupling-and-cohesion",
+        "09-dependency-injection"
+      ],
+      "readDate": "2026-11-14",
+      "readMethod": "Node fetch HTTP 200 擷取並完整閱讀正文",
+      "status": "ingested",
+      "notes": "涵蓋介面契約、多重介面實作、顯式實作、介面繼承，以及現代 C# 支援預設介面成員與靜態抽象成員、但不可宣告實例欄位與建構式之規範。"
+    },
+    {
+      "id": "src-ms-code-metrics-coupling",
+      "title": "Code metrics - Class coupling (S05)",
+      "authorOrOrg": "Microsoft Learn (Visual Studio Docs)",
+      "url": "https://learn.microsoft.com/en-us/visualstudio/code-quality/code-metrics-class-coupling?view=visualstudio",
+      "category": "domain",
+      "topics": [
+        "06-coupling-and-cohesion"
+      ],
+      "readDate": "2026-11-14",
+      "readMethod": "Node fetch HTTP 200 擷取並完整閱讀正文",
+      "status": "ingested",
+      "notes": "定義類別耦合（CBO：唯一相依外部型別數）與模組內聚性（單一任務緊密程度），並說明高內聚低耦合與維護性的關聯。"
+    },
+    {
+      "id": "src-ms-aspnet-mvc",
+      "title": "Overview of ASP.NET Core MVC (S06)",
+      "authorOrOrg": "Microsoft Learn (.NET Docs)",
+      "url": "https://learn.microsoft.com/en-us/aspnet/core/mvc/overview",
+      "category": "domain",
+      "topics": [
+        "07-mvc-architecture",
+        "08-integration-and-refactoring"
+      ],
+      "readDate": "2026-11-14",
+      "readMethod": "Node fetch HTTP 200 擷取並完整閱讀正文",
+      "status": "ingested",
+      "notes": "明確定義 ASP.NET Core MVC 中 Model（狀態與商業規則）、View（Razor 呈現，極小化邏輯）、Controller（協調輸入、Model 與 View 選擇）之邊界與相依方向。"
+    },
+    {
+      "id": "src-ms-dotnet-arch-principles",
+      "title": "Architectural principles - .NET (S07)",
+      "authorOrOrg": "Microsoft Learn (.NET Architecture Guides)",
+      "url": "https://learn.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/architectural-principles",
+      "category": "domain",
+      "topics": [
+        "02-encapsulation",
+        "06-coupling-and-cohesion",
+        "08-integration-and-refactoring",
+        "09-dependency-injection"
+      ],
+      "readDate": "2026-11-14",
+      "readMethod": "Node fetch HTTP 200 擷取並完整閱讀正文",
+      "status": "ingested",
+      "notes": "深入說明關注點分離、封裝保護不變量與反對可變全域狀態、依賴反轉（面向抽象）、明確依賴原則與單一職責原則。"
+    },
+    {
+      "id": "src-igouist-oo-series",
+      "title": "菜雞與物件導向系列（實際追蹤閱讀第 0、1、3、8 篇）",
+      "authorOrOrg": "伊果（igouist.github.io）",
+      "url": "https://igouist.github.io/post/2020/07/oo-0-object-oriented/",
+      "category": "supplement",
+      "topics": [
+        "01-classes-and-objects",
+        "02-encapsulation",
+        "06-coupling-and-cohesion"
+      ],
+      "readDate": "2026-11-14",
+      "readMethod": "Node fetch HTTP 200 追蹤系列目錄後實地讀取 oo-1、oo-3、oo-8 正文",
+      "status": "ingested",
+      "notes": "由前言索引實地追讀 oo-1-class-object、oo-3-encapsulation、oo-8-cohesion-and-coupling 三篇正文；補充繁中學習者易懂的封裝門窗比喻與「高內聚與低耦合平衡」警示。"
+    },
+    {
+      "id": "src-ms-csharp-oop",
+      "title": "Object-Oriented programming tutorial (C#)",
+      "authorOrOrg": "Microsoft Learn (.NET Docs)",
+      "url": "https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/tutorials/oop",
+      "category": "domain",
+      "topics": [
+        "01-classes-and-objects",
+        "02-encapsulation"
+      ],
+      "readDate": null,
+      "readMethod": "待讀取（本階段優先以 S01–S07 官方參考文件為核心依據）",
+      "status": "pending",
+      "notes": "已登錄但本階段未抓取全文，維持 pending 狀態，未計入 ingested。"
+    },
+    {
+      "id": "src-medium-oop-concept",
+      "title": "物件導向 (Object Oriented Programming) 概念",
+      "authorOrOrg": "totoroliu (Medium)",
+      "url": "https://totoroliu.medium.com/物件導向-object-oriented-programming-概念-5f205d437fd6",
+      "category": "supplement",
+      "topics": [
+        "01-classes-and-objects",
+        "02-encapsulation"
+      ],
+      "readDate": null,
+      "readMethod": "嘗試 HTTP 擷取受阻（回傳 HTTP 403 Cloudflare 驗證頁，未取得正文）",
+      "status": "unavailable",
+      "notes": "使用者提供之補充資料；因 Medium 防護無法以程式讀取全文，不以摘要充數，未計入 ingested。若需整合，須由人工在瀏覽器複製正文提供。"
+    },
+    {
+      "id": "src-medium-mvc-spa-ssr",
+      "title": "Introduction: MVC, SPA, and SSR",
+      "authorOrOrg": "Huli / hulitw (Medium)",
+      "url": "https://hulitw.medium.com/introduction-mvc-spa-and-ssr-545c941669e9",
+      "category": "supplement",
+      "topics": [
+        "07-mvc-architecture"
+      ],
+      "readDate": null,
+      "readMethod": "嘗試 HTTP 擷取受阻（回傳 HTTP 403 Cloudflare 驗證頁，未取得正文）",
+      "status": "unavailable",
+      "notes": "使用者提供之補充資料；因 Medium 防護無法以程式讀取全文，未計入 ingested。第 07 章提及 SPA/SSR 維度對照時已誠實標示需待此來源正文核對。"
+    },
+    {
+      "id": "src-ref-karpathy-llm-wiki",
+      "title": "LLM Wiki: A pattern for building personal knowledge bases",
+      "authorOrOrg": "Andrej Karpathy (GitHub Gist)",
+      "url": "https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f",
+      "category": "methodology",
+      "topics": [],
+      "readDate": "2026-11-14",
+      "readMethod": "Node fetch HTTP 200 擷取 Raw Gist 正文",
+      "status": "ingested",
+      "notes": "Wiki 方法論參考（不計入主題資料數）：借鏡 Raw sources / Wiki / Schema 三層分離與 index.md、log.md、Ingest / Lint 概念。"
+    },
+    {
+      "id": "src-ref-farza-wiki-skill",
+      "title": "Personal Knowledge Wiki Skill Pattern",
+      "authorOrOrg": "farzaa (GitHub Gist)",
+      "url": "https://gist.github.com/farzaa/c35ac0cfbeb957788650e36aabea836d",
+      "category": "methodology",
+      "topics": [],
+      "readDate": "2026-11-14",
+      "readMethod": "Node fetch HTTP 200 擷取 Raw Gist 正文",
+      "status": "ingested",
+      "notes": "Wiki 方法論參考（不計入主題資料數）：借鏡抗塞車（Anti-cramming）、抗空洞（Anti-thinning）與更新前後重讀原則。"
+    },
+    {
+      "id": "src-ms-dotnet-di",
+      "title": "Dependency injection - .NET (S08)",
+      "authorOrOrg": "Microsoft Learn (.NET Docs)",
+      "url": "https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection",
+      "category": "domain",
+      "topics": [
+        "09-dependency-injection"
+      ],
+      "readDate": "2026-11-14",
+      "readMethod": "Node fetch HTTP 200 擷取並完整閱讀正文",
+      "status": "ingested",
+      "notes": "官方 .NET 依賴注入指南：清楚對照類別內部直接 new 具體相依的三大缺點（替換須改原類別、依賴傳遞鏈分散、無法注入替身測試），並說明建構式注入與 IServiceCollection / IServiceProvider 角色。"
+    },
+    {
+      "id": "src-ms-dotnet-di-guidelines",
+      "title": "Dependency injection guidelines - .NET (S09)",
+      "authorOrOrg": "Microsoft Learn (.NET Docs)",
+      "url": "https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection-guidelines",
+      "category": "domain",
+      "topics": [
+        "09-dependency-injection"
+      ],
+      "readDate": "2026-11-14",
+      "readMethod": "Node fetch HTTP 200 擷取並完整閱讀正文",
+      "status": "ingested",
+      "notes": "官方 DI 設計準則：強調避免在服務內直接具現化具體相依、避免有狀態 static 全域狀態、控制建構式參數數量以檢視單一職責（SRP），以及容器對服務生命週期與處置的邊界。"
+    }
+  ]
+}

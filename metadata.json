@@ -1,0 +1,6 @@
+{
+  "name": "程式觀念實驗室｜從物件導向到 MVC 與低耦合設計",
+  "description": "以 C# 範例說明通用程式設計觀念的 LLM Wiki 教學網站與互動模擬實驗室，涵蓋類別與物件、封裝、繼承與組合、多型、介面、耦合與內聚及 MVC 架構。",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

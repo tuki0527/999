@@ -1,0 +1,1170 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>程式觀念實驗室｜教學 HTML 簡報（共 23 頁）</title>
+  <meta name="description" content="由 Wiki 知識庫同步產生之 23 頁 C# 程式觀念教學簡報，涵蓋物件導向、低耦合高內聚、MVC 架構與依賴注入入門。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #F6F7FB;
+      --surface: #FFFFFF;
+      --border: #E5E7EB;
+      --text: #1F2937;
+      --muted: #4B5563;
+      --primary: #3458A4;
+      --teal: #247C74;
+      --sans: 'Plus Jakarta Sans', 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+      --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      line-height: 1.7;
+    }
+    .shell {
+      max-width: 1024px;
+      margin: 0 auto;
+      padding: 20px 16px 40px;
+    }
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin-bottom: 12px;
+    }
+    .brand {
+      font-weight: 700;
+      font-size: 15px;
+      color: #111827;
+    }
+    .brand small {
+      display: block;
+      font-weight: 500;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+    button, a.btn-lesson, a.btn-back {
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      min-height: 38px;
+      padding: 7px 12px;
+      border-radius: 8px;
+      border: 1px solid #D1D5DB;
+      background: #FFFFFF;
+      color: var(--text);
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    button:hover, a.btn-lesson:hover, a.btn-back:hover { background: #F3F4F6; }
+    button.primary { background: var(--primary); color: #FFFFFF; border-color: var(--primary); }
+    button.primary:hover { background: #2B4887; }
+    a.btn-lesson { background: var(--teal); color: #FFFFFF; border-color: var(--teal); min-height: 34px; font-size: 12px; }
+    a.btn-lesson:hover { background: #1E665F; }
+    button:disabled { opacity: 0.45; cursor: not-allowed; }
+    button:focus-visible, a:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+    .progress-track {
+      height: 6px;
+      background: var(--border);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--primary);
+      width: 5%;
+      transition: width 150ms ease;
+    }
+    .notice {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #374151;
+      margin-bottom: 12px;
+    }
+    .toc-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    .toc-grid {
+      display: grid;
+      gap: 8px;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      margin-top: 10px;
+    }
+    .toc-item {
+      justify-content: flex-start;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 8px 10px;
+    }
+    .toc-item.is-current {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #FFFFFF;
+      font-weight: 600;
+    }
+    .toc-num { font-family: var(--mono); }
+
+    .slide {
+      display: none;
+      background: var(--surface);
+      border: 1px solid #D1D5DB;
+      border-radius: 12px;
+      padding: 28px;
+    }
+    .slide.is-active { display: block; }
+    .slide-top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .slide-top-right {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+    }
+    .group { font-size: 13px; font-weight: 700; color: var(--primary); }
+    .page-badge { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+    .slide h2 {
+      margin: 0;
+      font-size: 26px;
+      line-height: 1.3;
+      color: #111827;
+    }
+    .subtitle {
+      margin: 8px 0 0;
+      font-size: 16px;
+      color: var(--muted);
+    }
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+      padding: 10px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .meta-row code { font-family: var(--mono); color: #111827; }
+    ul.points {
+      list-style: none;
+      padding: 0;
+      margin: 18px 0 0;
+      display: grid;
+      gap: 12px;
+      font-size: 17px;
+    }
+    ul.points li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    ul.points .num {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-top: 5px;
+      flex-shrink: 0;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      margin-top: 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; text-align: left; }
+    th, td { padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    th { background: #F8FAFC; font-size: 12px; color: var(--muted); }
+    td.accent { color: var(--primary); font-weight: 500; white-space: nowrap; }
+
+    .code-card {
+      margin-top: 18px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #1E293B;
+      background: #0F172A;
+      color: #E2E8F0;
+    }
+    .code-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      background: #111827;
+      padding: 10px 14px;
+      border-bottom: 1px solid #1E293B;
+      font-size: 13px;
+    }
+    .code-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+    .code-env { font-size: 12px; color: #94A3B8; }
+    .btn-copy {
+      min-height: 30px;
+      padding: 4px 10px;
+      font-size: 12px;
+      background: #1E293B;
+      color: #E2E8F0;
+      border-color: #334155;
+    }
+    .btn-copy:hover { background: #334155; }
+    .code-sub {
+      background: #0B1120;
+      padding: 6px 14px;
+      font-size: 12px;
+      color: #94A3B8;
+      border-bottom: 1px solid #1E293B;
+    }
+    .manual-copy-box {
+      padding: 10px 14px;
+      background: #1E293B;
+      border-bottom: 1px solid #334155;
+      font-size: 12px;
+    }
+    .manual-copy-box textarea {
+      width: 100%;
+      margin-top: 6px;
+      background: #0F172A;
+      color: #F8FAFC;
+      border: 1px solid #475569;
+      border-radius: 6px;
+      padding: 8px;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    pre {
+      margin: 0;
+      padding: 12px 0;
+      overflow-x: auto;
+      font-family: var(--mono);
+      font-size: 14.5px;
+      line-height: 1.6;
+    }
+    .code-line { display: flex; padding: 0 14px; min-width: max-content; }
+    .ln { width: 32px; margin-right: 14px; text-align: right; color: #64748B; user-select: none; }
+
+    .callout {
+      margin-top: 18px;
+      border: 1px solid var(--border);
+      background: #F8FAFC;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 14px;
+    }
+    .callout-title { font-size: 12px; font-weight: 700; color: var(--teal); }
+    .callout p { margin: 4px 0 0; color: #374151; }
+
+    .nav-bottom {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .kbd-hint { font-size: 12px; color: var(--muted); }
+    kbd {
+      font-family: var(--mono);
+      border: 1px solid #D1D5DB;
+      background: #FFFFFF;
+      border-radius: 4px;
+      padding: 1px 6px;
+    }
+
+    body.focus-mode .shell { max-width: 1120px; padding-top: 12px; }
+    body.focus-mode .hide-in-focus { display: none; }
+
+    @media (max-width: 640px) {
+      .slide { padding: 18px 16px; }
+      .slide h2 { font-size: 21px; }
+      ul.points { font-size: 16px; }
+      pre { font-size: 13.5px; }
+    }
+
+    @media print {
+      @page { size: A4 landscape; margin: 12mm; }
+      body { background: #FFFFFF; color: #111827; }
+      .no-print { display: none !important; }
+      .shell { max-width: none; padding: 0; }
+      .slide {
+        display: block !important;
+        border: 1px solid #D1D5DB;
+        padding: 18px 22px;
+        margin: 0;
+        break-inside: avoid;
+        page-break-inside: avoid;
+        break-after: page;
+        page-break-after: always;
+      }
+      .slide:last-child {
+        break-after: auto;
+        page-break-after: auto;
+      }
+      pre { white-space: pre-wrap; word-break: break-word; }
+      .code-line { min-width: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="toolbar no-print">
+      <div class="brand">
+        程式觀念實驗室｜教學 HTML 簡報
+        <small>由 wiki/concepts/*.md 與 examples/csharp/ 同步產生（共 23 頁）</small>
+      </div>
+      <div class="actions">
+        <a class="btn-back hide-in-focus" href="./#/">返回知識庫</a>
+        <button type="button" id="btn-toc">章節目錄</button>
+        <button type="button" id="btn-fs">全螢幕 / 專注檢視</button>
+        <button type="button" id="btn-print">列印 / 另存 PDF</button>
+      </div>
+    </div>
+
+    <div class="progress-track no-print"><div class="progress-fill" id="progress-fill"></div></div>
+    <div class="notice no-print" id="notice" hidden></div>
+    <nav class="toc-panel no-print" id="toc-panel" aria-label="簡報頁次目錄" hidden>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <strong style="font-size:13px;">簡報頁次目錄（點擊跳轉）</strong>
+        <button type="button" id="btn-toc-close" style="min-height:30px;padding:4px 10px;font-size:12px;">收合</button>
+      </div>
+      <div class="toc-grid"><button type="button" class="toc-item is-current" data-jump="0"><span class="toc-num">01.</span><span>程式觀念實驗室：從物件導向到 MVC 與低耦合設計</span></button><button type="button" class="toc-item" data-jump="1"><span class="toc-num">02.</span><span>從單一類別到系統組裝：9 章完整學習路線</span></button><button type="button" class="toc-item" data-jump="2"><span class="toc-num">03.</span><span>01. 類別與物件：為什麼需要這個設計？</span></button><button type="button" class="toc-item" data-jump="3"><span class="toc-num">04.</span><span>01. 類別與物件：核心 C# 結構與變更影響</span></button><button type="button" class="toc-item" data-jump="4"><span class="toc-num">05.</span><span>02. 封裝：為什麼需要這個設計？</span></button><button type="button" class="toc-item" data-jump="5"><span class="toc-num">06.</span><span>02. 封裝：核心 C# 結構與變更影響</span></button><button type="button" class="toc-item" data-jump="6"><span class="toc-num">07.</span><span>03. 繼承與組合：為什麼需要這個設計？</span></button><button type="button" class="toc-item" data-jump="7"><span class="toc-num">08.</span><span>03. 繼承與組合：核心 C# 結構與變更影響</span></button><button type="button" class="toc-item" data-jump="8"><span class="toc-num">09.</span><span>04. 多型：為什麼需要這個設計？</span></button><button type="button" class="toc-item" data-jump="9"><span class="toc-num">10.</span><span>04. 多型：核心 C# 結構與變更影響</span></button><button type="button" class="toc-item" data-jump="10"><span class="toc-num">11.</span><span>05. 抽象類別與介面：為什麼需要這個設計？</span></button><button type="button" class="toc-item" data-jump="11"><span class="toc-num">12.</span><span>05. 抽象類別與介面：核心 C# 結構與變更影響</span></button><button type="button" class="toc-item" data-jump="12"><span class="toc-num">13.</span><span>06. 耦合與內聚：為什麼需要這個設計？</span></button><button type="button" class="toc-item" data-jump="13"><span class="toc-num">14.</span><span>06. 耦合與內聚：核心 C# 結構與變更影響</span></button><button type="button" class="toc-item" data-jump="14"><span class="toc-num">15.</span><span>07. MVC 架構：為什麼需要這個設計？</span></button><button type="button" class="toc-item" data-jump="15"><span class="toc-num">16.</span><span>07. MVC 架構：核心 C# 結構與變更影響</span></button><button type="button" class="toc-item" data-jump="16"><span class="toc-num">17.</span><span>08. 整合與重構：為什麼需要這個設計？</span></button><button type="button" class="toc-item" data-jump="17"><span class="toc-num">18.</span><span>08. 整合與重構：核心 C# 結構與變更影響</span></button><button type="button" class="toc-item" data-jump="18"><span class="toc-num">19.</span><span>09. 依賴注入入門：為什麼需要這個設計？</span></button><button type="button" class="toc-item" data-jump="19"><span class="toc-num">20.</span><span>09. 依賴注入入門：核心 C# 結構與變更影響</span></button><button type="button" class="toc-item" data-jump="20"><span class="toc-num">21.</span><span>一次釐清：OOP、低耦合、MVC 與網頁渲染維度</span></button><button type="button" class="toc-item" data-jump="21"><span class="toc-num">22.</span><span>知識來源 Ingest 與環境驗證實況</span></button><button type="button" class="toc-item" data-jump="22"><span class="toc-num">23.</span><span>前往知識庫操作模擬，並檢視製作流程與擴充驗證紀錄</span></button></div>
+    </nav>
+
+    <main id="deck">
+      <article class="slide is-active" data-slide-index="0" aria-label="第 1 頁：程式觀念實驗室：從物件導向到 MVC 與低耦合設計">
+    <div class="slide-top">
+      <span class="group">導論｜讀者前提與定位</span>
+      <div class="slide-top-right">
+        <span class="page-badge">第 1 / 23 頁</span>
+        <a class="btn-lesson no-print" href="./#/">回到知識庫首頁 →</a>
+      </div>
+    </div>
+    <h2>程式觀念實驗室：從物件導向到 MVC 與低耦合設計</h2>
+    <p class="subtitle">以 C# 範例為載體，建立跨語言通用的模組化與架構設計思維</p>
+    
+    
+    <ul class="points"><li><span class="num">01</span><span>讀者前提：已熟悉變數、型別、條件判斷（if/else）、迴圈與函式（method）。</span></li><li><span class="num">02</span><span>解決痛點：克服「程式碼全寫在單一檔案、改一處壞三處」的維護困境。</span></li><li><span class="num">03</span><span>技術邊界：教材範例採 C# 12（.NET 8）；互動實驗為 TypeScript 前端概念模擬。</span></li><li><span class="num">04</span><span>單一資料來源：本簡報直接產生自 wiki/concepts/*.md 與 examples/csharp/。</span></li></ul>
+    
+    <div class="callout"><div class="callout-title">本階段資料誠實原則</div><p>所有觀念均附來源登錄紀錄；因環境未安裝 .NET SDK，C# 範例維持標示 unverified-no-dotnet。</p></div>
+  </article>
+<article class="slide" data-slide-index="1" aria-label="第 2 頁：從單一類別到系統組裝：9 章完整學習路線">
+    <div class="slide-top">
+      <span class="group">導論｜9 章學習地圖</span>
+      <div class="slide-top-right">
+        <span class="page-badge">第 2 / 23 頁</span>
+        <a class="btn-lesson no-print" href="./#/">回到知識庫首頁 →</a>
+      </div>
+    </div>
+    <h2>從單一類別到系統組裝：9 章完整學習路線</h2>
+    <p class="subtitle">每一章皆聚焦一個明確的生活／系統情境，逐層推演設計原因</p>
+    
+    <div class="table-wrap"><table><thead><tr><th>章節主題</th><th>情境</th><th>核心觀念摘要</th></tr></thead><tbody><tr><td><strong>01 · 類別與物件</strong></td><td class="accent">學生名冊</td><td>以學生名冊為情境，理解 Class 與 Object 的差異，並掌握欄位、屬性、方法與建構式的分工。</td></tr><tr><td><strong>02 · 封裝</strong></td><td class="accent">銀行帳戶</td><td>以銀行帳戶為情境，學習如何隱藏內部敏感欄位，並透過公開方法把關輸入驗證與狀態一致性。</td></tr><tr><td><strong>03 · 繼承與組合</strong></td><td class="accent">交通工具與引擎</td><td>透過交通工具與動力系統的對比，理解 C# 單一類別繼承（is-a）與物件組合（has-a）的適用情境與取捨。</td></tr><tr><td><strong>04 · 多型</strong></td><td class="accent">不同動物發聲</td><td>透過動物合唱團情境，理解宣告型別與執行期實際型別的差異，掌握 virtual、override 動態分派與 Overload 的區別。</td></tr><tr><td><strong>05 · 抽象類別與介面</strong></td><td class="accent">圖形及繪製能力</td><td>以繪圖畫布上的圖形與文字標籤為情境，釐清 abstract class 與 interface 的職責邊界及現代 C# 介面規範。</td></tr><tr><td><strong>06 · 耦合與內聚</strong></td><td class="accent">訂單計算及通知</td><td>透過訂單計算與通知流程的緊密／鬆散寫法對比，學習高內聚職責分工、依賴反轉原則與控制變更影響範圍。</td></tr><tr><td><strong>07 · MVC 架構</strong></td><td class="accent">圖書查詢</td><td>以 ASP.NET Core MVC 圖書查詢為情境，追蹤 HTTP 請求經過 Controller、Model 與 View 的完整流程與依賴方向。</td></tr><tr><td><strong>08 · 整合與重構</strong></td><td class="accent">待辦事項系統</td><td>綜合運用封裝、低耦合與分層概念，將單檔混雜的待辦事項程式重構為三層清楚分工，並實測加入「截止日期」新需求。</td></tr><tr><td><strong>09 · 依賴注入入門</strong></td><td class="accent">檔案處理服務替換紀錄方式</td><td>以檔案處理服務替換不同紀錄方式為情境，學習建構式注入如何把建立相依物件的責任移交外部，並清楚區分依賴注入（DI）與依賴反轉（DIP）。</td></tr></tbody></table></div>
+    
+    
+    
+  </article>
+<article class="slide" data-slide-index="2" aria-label="第 3 頁：01. 類別與物件：為什麼需要這個設計？">
+    <div class="slide-top">
+      <span class="group">第 01 章｜觀念與問題</span>
+      <div class="slide-top-right">
+        <span class="page-badge">第 3 / 23 頁</span>
+        <a class="btn-lesson no-print" href="./#/wiki/classes-and-objects">回到對應完整教材 →</a>
+      </div>
+    </div>
+    <h2>01. 類別與物件：為什麼需要這個設計？</h2>
+    <p class="subtitle">學生名冊：從藍圖定義到獨立個體</p>
+    <div class="meta-row"><span>主題 ID：<code>01-classes-and-objects</code></span><span>· 來源 ID：<code>src-ms-csharp-classes, src-igouist-oo-series</code></span></div>
+    
+    <ul class="points"><li><span class="num">01</span><span>分辨類別（Class）與物件實例（Object / Instance）的差異：一份藍圖可以產生多個在記憶體中彼此獨立的物件。</span></li><li><span class="num">02</span><span>說出欄位（Field）、屬性（Property）、建構式（Constructor）與方法（Method）各自的分工，以及 C# 預設成員存取權為 private 的規則。</span></li><li><span class="num">03</span><span>了解為何 C# class 屬於參考型別（Reference Type），並認識 class、struct、record 的基本差異。</span></li></ul>
+    
+    <div class="callout"><div class="callout-title">核心問題情境</div><p>想像你正在協助導師撰寫一個「學生名冊」程式。剛開始只有兩位學生，你可能用平行變數來記錄資料：</p></div>
+  </article>
+<article class="slide" data-slide-index="3" aria-label="第 4 頁：01. 類別與物件：核心 C# 結構與變更影響">
+    <div class="slide-top">
+      <span class="group">第 01 章｜C# 範例片段與比較</span>
+      <div class="slide-top-right">
+        <span class="page-badge">第 4 / 23 頁</span>
+        <a class="btn-lesson no-print" href="./#/wiki/classes-and-objects">回到對應完整教材 →</a>
+      </div>
+    </div>
+    <h2>01. 類別與物件：核心 C# 結構與變更影響</h2>
+    <p class="subtitle">以學生名冊為情境，理解 Class 與 Object 的差異，並掌握欄位、屬性、方法與建構式的分工。</p>
+    <div class="meta-row"><span>主題 ID：<code>01-classes-and-objects</code></span><span>· 來源 ID：<code>src-ms-csharp-classes, src-igouist-oo-series</code></span></div>
+    
+    <ul class="points"><li><span class="num">01</span><span>未使用類別（散落變數與多個獨立函式）：你必須搜尋程式裡所有直接改寫分數變數的地方，逐一補上 if 檢查；所有負責格式化列印的函式也都要確認參數順序是否一致，漏改一處就會出現資料不一致。</span></li><li><span class="num">02</span><span>使用 Student 類別之後：檢查規則集中在 Student.UpdateScore，等級判斷集中在 Student.GetSummary。不管名冊上有 2 位還是 500 位學生，只要修改 Student.cs 這個單一藍圖，所有學生物件都會立即遵循新規則。</span></li></ul>
+    <div class="code-card" data-disable-slide-keys="true">
+        <div class="code-head">
+          <span><strong>Student.cs</strong>（第 3–24 行）· 01-classes-and-objects/Student.cs</span>
+          <div class="code-actions">
+            <span class="code-env">C# 12 · .NET 8 · 未本地編譯驗證</span>
+            <button type="button" class="btn-copy no-print" data-copy-target="code-3">複製片段</button>
+          </div>
+        </div>
+        <div class="code-sub">可搭配所屬單元專案執行｜.NET 8 Console（01-classes-and-objects）</div>
+        <div class="manual-copy-box no-print" id="manual-3" hidden>
+          <div class="manual-copy-head">剪貼簿權限受限，請選取下方程式碼後按 Ctrl+C / Cmd+C：</div>
+          <textarea readonly rows="4" aria-label="手動複製程式碼">public class Student
+{
+    private int _score;
+
+    public string StudentId { get; }
+    public string Name { get; private set; }
+    public int Score =&gt; _score;
+
+    public Student(string studentId, string name, int initialScore)
+    {
+        StudentId = studentId;
+        Name = name;
+        _score = initialScore;
+    }
+
+    public void UpdateScore(int newScore)
+    {
+        if (newScore &gt;= 0 &amp;&amp; newScore &lt;= 100)
+        {
+            _score = newScore;
+        }
+    }</textarea>
+        </div>
+        <pre><code id="code-3"><span class="code-line"><span class="ln">3</span><span>public class Student</span></span><span class="code-line"><span class="ln">4</span><span>{</span></span><span class="code-line"><span class="ln">5</span><span>    private int _score;</span></span><span class="code-line"><span class="ln">6</span><span> </span></span><span class="code-line"><span class="ln">7</span><span>    public string StudentId { get; }</span></span><span class="code-line"><span class="ln">8</span><span>    public string Name { get; private set; }</span></span><span class="code-line"><span class="ln">9</span><span>    public int Score =&gt; _score;</span></span><span class="code-line"><span class="ln">10</span><span> </span></span><span class="code-line"><span class="ln">11</span><span>    public Student(string studentId, string name, int initialScore)</span></span><span class="code-line"><span class="ln">12</span><span>    {</span></span><span class="code-line"><span class="ln">13</span><span>        StudentId = studentId;</span></span><span class="code-line"><span class="ln">14</span><span>        Name = name;</span></span><span class="code-line"><span class="ln">15</span><span>        _score = initialScore;</span></span><span class="code-line"><span class="ln">16</span><span>    }</span></span><span class="code-line"><span class="ln">17</span><span> </span></span><span class="code-line"><span class="ln">18</span><span>    public void UpdateScore(int newScore)</span></span><span class="code-line"><span class="ln">19</span><span>    {</span></span><span class="code-line"><span class="ln">20</span><span>        if (newScore &gt;= 0 &amp;&amp; newScore &lt;= 100)</span></span><span class="code-line"><span class="ln">21</span><span>        {</span></span><span class="code-line"><span class="ln">22</span><span>            _score = newScore;</span></span><span class="code-line"><span class="ln">23</span><span>        }</span></span><span class="code-line"><span class="ln">24</span><span>    }</span></span></code></pre>
+      </div>
+    <div class="callout"><div class="callout-title">完整程式與互動模擬</div><p>完整檔案清單：01-classes-and-objects/Student.cs、01-classes-and-objects/Program.cs。需要操作步驟模擬與互動檢查解析，請點上方「回到對應完整教材」。</p></div>
+  </article>
+<article class="slide" data-slide-index="4" aria-label="第 5 頁：02. 封裝：為什麼需要這個設計？">
+    <div class="slide-top">
+      <span class="group">第 02 章｜觀念與問題</span>
+      <div class="slide-top-right">
+        <span class="page-badge">第 5 / 23 頁</span>
+        <a class="btn-lesson no-print" href="./#/wiki/encapsulation">回到對應完整教材 →</a>
+      </div>
+    </div>
+    <h2>02. 封裝：為什麼需要這個設計？</h2>
+    <p class="subtitle">銀行帳戶：透過操作方法維護餘額及輸入規則</p>
+    <div class="meta-row"><span>主題 ID：<code>02-encapsulation</code></span><span>· 來源 ID：<code>src-ms-csharp-classes, src-ms-dotnet-arch-principles, src-igouist-oo-series</code></span></div>
+    
+    <ul class="points"><li><span class="num">01</span><span>理解封裝的雙重核心：隱藏內部實作細節與保護領域不變量（Invariants），而不只是把欄位改名加前綴。</span></li><li><span class="num">02</span><span>分辨「僅提供公開讀寫的 Getter/Setter」與「提供有意義的業務操作方法（Deposit、Withdraw）」之間的本質差異。</span></li><li><span class="num">03</span><span>學會在操作方法內使用前置保護條件（Guard Clauses），並在驗證失敗時保持原狀態不變且明確回傳失敗原因。</span></li></ul>
+    
+    <div class="callout"><div class="callout-title">核心問題情境</div><p>在銀行系統裡，每個帳戶最重要的資產就是「餘額（Balance）」。假設開發者把帳戶餘額直接宣告成公開欄位或無保護的自動屬性 public decimal Balance { get; set; }：</p></div>
+  </article>
+<article class="slide" data-slide-index="5" aria-label="第 6 頁：02. 封裝：核心 C# 結構與變更影響">
+    <div class="slide-top">
+      <span class="group">第 02 章｜C# 範例片段與比較</span>
+      <div class="slide-top-right">
+        <span class="page-badge">第 6 / 23 頁</span>
+        <a class="btn-lesson no-print" href="./#/wiki/encapsulation">回到對應完整教材 →</a>
+      </div>
+    </div>
+    <h2>02. 封裝：核心 C# 結構與變更影響</h2>
+    <p class="subtitle">以銀行帳戶為情境，學習如何隱藏內部敏感欄位，並透過公開方法把關輸入驗證與狀態一致性。</p>
+    <div class="meta-row"><span>主題 ID：<code>02-encapsulation</code></span><span>· 來源 ID：<code>src-ms-csharp-classes, src-ms-dotnet-arch-principles, src-igouist-oo-series</code></span></div>
+    
+    <ul class="points"><li><span class="num">01</span><span>未封裝（外部直接加減 Balance）：所有寫過 account.Balance -= amount; 的頁面與模組都必須各寫一次上限與凍結檢查，只要有一處忘記補上，系統就會出現嚴重資金漏洞。</span></li><li><span class="num">02</span><span>已封裝（統一由 Withdraw 方法把關）：所有呼叫端原本就只能透過 account.Withdraw(amount) 提款，我們只需在 BankAccount.Withdraw 內加上單筆上限與狀態檢查，外部呼叫端一行都不用改，整個系統立刻一致套用新規則。</span></li></ul>
+    <div class="code-card" data-disable-slide-keys="true">
+        <div class="code-head">
+          <span><strong>BankAccount.cs</strong>（第 17–41 行）· 02-encapsulation/BankAccount.cs</span>
+          <div class="code-actions">
+            <span class="code-env">C# 12 · .NET 8 · 未本地編譯驗證</span>
+            <button type="button" class="btn-copy no-print" data-copy-target="code-5">複製片段</button>
+          </div>
+        </div>
+        <div class="code-sub">可搭配所屬單元專案執行｜.NET 8 Console（02-encapsulation）</div>
+        <div class="manual-copy-box no-print" id="manual-5" hidden>
+          <div class="manual-copy-head">剪貼簿權限受限，請選取下方程式碼後按 Ctrl+C / Cmd+C：</div>
+          <textarea readonly rows="4" aria-label="手動複製程式碼">public class BankAccount
+{
+    private decimal _balance;
+
+    public string AccountNumber { get; }
+    public string OwnerName { get; }
+    public decimal Balance =&gt; _balance;
+
+    public BankAccount(string accountNumber, string ownerName, decimal initialBalance)
+    {
+        AccountNumber = accountNumber;
+        OwnerName = ownerName;
+        _balance = initialBalance &gt;= 0m ? initialBalance : 0m;
+    }
+
+    public OperationResult Deposit(decimal amount)
+    {
+        if (amount &lt;= 0m)
+        {
+            return new OperationResult(false, &quot;存款金額必須大於 0。&quot;, _balance);
+        }
+
+        _balance += amount;
+        return new OperationResult(true, $&quot;成功存入 {amount:N2} 元。&quot;, _balance);
+    }</textarea>
+        </div>
+        <pre><code id="code-5"><span class="code-line"><span class="ln">17</span><span>public class BankAccount</span></span><span class="code-line"><span class="ln">18</span><span>{</span></span><span class="code-line"><span class="ln">19</span><span>    private decimal _balance;</span></span><span class="code-line"><span class="ln">20</span><span> </span></span><span class="code-line"><span class="ln">21</span><span>    public string AccountNumber { get; }</span></span><span class="code-line"><span class="ln">22</span><span>    public string OwnerName { get; }</span></span><span class="code-line"><span class="ln">23</span><span>    public decimal Balance =&gt; _balance;</span></span><span class="code-line"><span class="ln">24</span><span> </span></span><span class="code-line"><span class="ln">25</span><span>    public BankAccount(string accountNumber, string ownerName, decimal initialBalance)</span></span><span class="code-line"><span class="ln">26</span><span>    {</span></span><span class="code-line"><span class="ln">27</span><span>        AccountNumber = accountNumber;</span></span><span class="code-line"><span class="ln">28</span><span>        OwnerName = ownerName;</span></span><span class="code-line"><span class="ln">29</span><span>        _balance = initialBalance &gt;= 0m ? initialBalance : 0m;</span></span><span class="code-line"><span class="ln">30</span><span>    }</span></span><span class="code-line"><span class="ln">31</span><span> </span></span><span class="code-line"><span class="ln">32</span><span>    public OperationResult Deposit(decimal amount)</span></span><span class="code-line"><span class="ln">33</span><span>    {</span></span><span class="code-line"><span class="ln">34</span><span>        if (amount &lt;= 0m)</span></span><span class="code-line"><span class="ln">35</span><span>        {</span></span><span class="code-line"><span class="ln">36</span><span>            return new OperationResult(false, &quot;存款金額必須大於 0。&quot;, _balance);</span></span><span class="code-line"><span class="ln">37</span><span>        }</span></span><span class="code-line"><span class="ln">38</span><span> </span></span><span class="code-line"><span class="ln">39</span><span>        _balance += amount;</span></span><span class="code-line"><span class="ln">40</span><span>        return new OperationResult(true, $&quot;成功存入 {amount:N2} 元。&quot;, _balance);</span></span><span class="code-line"><span class="ln">41</span><span>    }</span></span></code></pre>
+      </div>
+    <div class="callout"><div class="callout-title">完整程式與互動模擬</div><p>完整檔案清單：02-encapsulation/BankAccount.cs、02-encapsulation/Program.cs。需要操作步驟模擬與互動檢查解析，請點上方「回到對應完整教材」。</p></div>
+  </article>
+<article class="slide" data-slide-index="6" aria-label="第 7 頁：03. 繼承與組合：為什麼需要這個設計？">
+    <div class="slide-top">
+      <span class="group">第 03 章｜觀念與問題</span>
+      <div class="slide-top-right">
+        <span class="page-badge">第 7 / 23 頁</span>
+        <a class="btn-lesson no-print" href="./#/wiki/inheritance-and-composition">回到對應完整教材 →</a>
+      </div>
+    </div>
+    <h2>03. 繼承與組合：為什麼需要這個設計？</h2>
+    <p class="subtitle">交通工具與引擎：is-a 與 has-a 的設計取捨</p>
+    <div class="meta-row"><span>主題 ID：<code>03-inheritance-and-composition</code></span><span>· 來源 ID：<code>src-ms-csharp-classes, src-ms-csharp-inheritance</code></span></div>
+    
+    <ul class="points"><li><span class="num">01</span><span>掌握 C# 繼承的語法規則：單一類別繼承（每個類別只能繼承一個基底類別），且建構式與解構子不會被自動繼承，必須用 : base(...) 明確呼叫。</span></li><li><span class="num">02</span><span>區分 is-a（是一種） 與 has-a（擁有一個） 的設計模型差異。</span></li><li><span class="num">03</span><span>理解「優先考慮組合（Favor composition over inheritance）」的原因：避免類別樹爆炸並支援執行期抽換元件。</span></li></ul>
+    
+    <div class="callout"><div class="callout-title">核心問題情境</div><p>假設你要設計一套車隊管理程式，一開始系統裡只有「交通工具」與「轎車」。使用剛學到的物件導向語法，你很自然寫出 Sedan : VehicleBase，讓轎車繼承交通工具的品牌欄位與介紹方法，省下重複程式碼。</p></div>
+  </article>
+<article class="slide" data-slide-index="7" aria-label="第 8 頁：03. 繼承與組合：核心 C# 結構與變更影響">
+    <div class="slide-top">
+      <span class="group">第 03 章｜C# 範例片段與比較</span>
+      <div class="slide-top-right">
+        <span class="page-badge">第 8 / 23 頁</span>
+        <a class="btn-lesson no-print" href="./#/wiki/inheritance-and-composition">回到對應完整教材 →</a>
+      </div>
+    </div>
+    <h2>03. 繼承與組合：核心 C# 結構與變更影響</h2>
+    <p class="subtitle">透過交通工具與動力系統的對比，理解 C# 單一類別繼承（is-a）與物件組合（has-a）的適用情境與取捨。</p>
+    <div class="meta-row"><span>主題 ID：<code>03-inheritance-and-composition</code></span><span>· 來源 ID：<code>src-ms-csharp-classes, src-ms-csharp-inheritance</code></span></div>
+    
+    <ul class="points"><li><span class="num">01</span><span>只靠繼承設計：你除了要改寫原本假設只有馬力的基底或中間類別，還得為轎車與貨車各自衍生新的氫燃料子類別（HydrogenSedan、HydrogenTruck），既有繼承樹倍數膨脹。</span></li><li><span class="num">02</span><span>使用組合設計：只需新增一個實作 IPowerUnit 的 HydrogenCell 類別，既有的 CarWithComposition、PetrolEngine 與 ElectricMotor 程式碼一行都不用修改，直接傳入就能使用。</span></li></ul>
+    <div class="code-card" data-disable-slide-keys="true">
+        <div class="code-head">
+          <span><strong>VehicleComposition.cs</strong>（第 22–35 行）· 03-inheritance-and-composition/VehicleComposition.cs</span>
+          <div class="code-actions">
+            <span class="code-env">C# 12 · .NET 8 · 未本地編譯驗證</span>
+            <button type="button" class="btn-copy no-print" data-copy-target="code-7">複製片段</button>
+          </div>
+        </div>
+        <div class="code-sub">可搭配所屬單元專案執行｜.NET 8 Console（03-inheritance-and-composition）</div>
+        <div class="manual-copy-box no-print" id="manual-7" hidden>
+          <div class="manual-copy-head">剪貼簿權限受限，請選取下方程式碼後按 Ctrl+C / Cmd+C：</div>
+          <textarea readonly rows="4" aria-label="手動複製程式碼">public class CarWithComposition
+{
+    private IPowerUnit _engine;
+    public string Brand { get; }
+
+    public CarWithComposition(string brand, IPowerUnit engine)
+    {
+        Brand = brand;
+        _engine = engine;
+    }
+
+    public void SwapEngine(IPowerUnit nextEngine) =&gt; _engine = nextEngine;
+    public string Drive() =&gt; $&quot;{Brand} 搭載 [{_engine.EngineLabel}] → {_engine.Start()}&quot;;
+}</textarea>
+        </div>
+        <pre><code id="code-7"><span class="code-line"><span class="ln">22</span><span>public class CarWithComposition</span></span><span class="code-line"><span class="ln">23</span><span>{</span></span><span class="code-line"><span class="ln">24</span><span>    private IPowerUnit _engine;</span></span><span class="code-line"><span class="ln">25</span><span>    public string Brand { get; }</span></span><span class="code-line"><span class="ln">26</span><span> </span></span><span class="code-line"><span class="ln">27</span><span>    public CarWithComposition(string brand, IPowerUnit engine)</span></span><span class="code-line"><span class="ln">28</span><span>    {</span></span><span class="code-line"><span class="ln">29</span><span>        Brand = brand;</span></span><span class="code-line"><span class="ln">30</span><span>        _engine = engine;</span></span><span class="code-line"><span class="ln">31</span><span>    }</span></span><span class="code-line"><span class="ln">32</span><span> </span></span><span class="code-line"><span class="ln">33</span><span>    public void SwapEngine(IPowerUnit nextEngine) =&gt; _engine = nextEngine;</span></span><span class="code-line"><span class="ln">34</span><span>    public string Drive() =&gt; $&quot;{Brand} 搭載 [{_engine.EngineLabel}] → {_engine.Start()}&quot;;</span></span><span class="code-line"><span class="ln">35</span><span>}</span></span></code></pre>
+      </div>
+    <div class="callout"><div class="callout-title">完整程式與互動模擬</div><p>完整檔案清單：03-inheritance-and-composition/VehicleInheritance.cs、03-inheritance-and-composition/VehicleComposition.cs、03-inheritance-and-composition/Program.cs。需要操作步驟模擬與互動檢查解析，請點上方「回到對應完整教材」。</p></div>
+  </article>
+<article class="slide" data-slide-index="8" aria-label="第 9 頁：04. 多型：為什麼需要這個設計？">
+    <div class="slide-top">
+      <span class="group">第 04 章｜觀念與問題</span>
+      <div class="slide-top-right">
+        <span class="page-badge">第 9 / 23 頁</span>
+        <a class="btn-lesson no-print" href="./#/wiki/polymorphism">回到對應完整教材 →</a>
+      </div>
+    </div>
+    <h2>04. 多型：為什麼需要這個設計？</h2>
+    <p class="subtitle">不同動物發聲：共同型別與執行期動態分派</p>
+    <div class="meta-row"><span>主題 ID：<code>04-polymorphism</code></span><span>· 來源 ID：<code>src-ms-csharp-polymorphism, src-ms-csharp-inheritance</code></span></div>
+    
+    <ul class="points"><li><span class="num">01</span><span>區分變數的宣告型別（Declared / Compile-time Type）與物件的執行期實際型別（Runtime Type）。</span></li><li><span class="num">02</span><span>理解 C# 如何透過 virtual 與 override 在執行期進行動態分派（Dynamic Dispatch）。</span></li><li><span class="num">03</span><span>分辨 Override（覆寫：執行期依實際物件分派） 與 Overload（多載：編譯期依參數簽章決定） 的差異，並認識方法隱藏（new）可能帶來的陷阱。</span></li></ul>
+    
+    <div class="callout"><div class="callout-title">核心問題情境</div><p>假設你在開發一款兒童語言教學軟體，畫面上要一次讓一群動物依序發出叫聲。如果沒有利用物件導向的共同型別與多型，你可能會寫出這樣的判斷式：</p></div>
+  </article>
+<article class="slide" data-slide-index="9" aria-label="第 10 頁：04. 多型：核心 C# 結構與變更影響">
+    <div class="slide-top">
+      <span class="group">第 04 章｜C# 範例片段與比較</span>
+      <div class="slide-top-right">
+        <span class="page-badge">第 10 / 23 頁</span>
+        <a class="btn-lesson no-print" href="./#/wiki/polymorphism">回到對應完整教材 →</a>
+      </div>
+    </div>
+    <h2>04. 多型：核心 C# 結構與變更影響</h2>
+    <p class="subtitle">透過動物合唱團情境，理解宣告型別與執行期實際型別的差異，掌握 virtual、override 動態分派與 Overload 的區別。</p>
+    <div class="meta-row"><span>主題 ID：<code>04-polymorphism</code></span><span>· 來源 ID：<code>src-ms-csharp-polymorphism, src-ms-csharp-inheritance</code></span></div>
+    
+    <ul class="points"><li><span class="num">01</span><span>未使用多型（if / else if 判斷具體型別）：你必須找出專案中所有列舉動物發聲的地方，逐一補上兩個 else if 分支，漏掉任何一處就會在執行時發出錯誤或空白聲音。</span></li><li><span class="num">02</span><span>使用 virtual / override 多型：只需新增 Frog : Animal 與 Sheep : Animal 並 override Speak()，原本處理 List&lt;Animal&gt; 的合唱迴圈一行都不必更改（符合開放封閉原則的精神）。</span></li></ul>
+    <div class="code-card" data-disable-slide-keys="true">
+        <div class="code-head">
+          <span><strong>AnimalChorus.cs</strong>（第 3–25 行）· 04-polymorphism/AnimalChorus.cs</span>
+          <div class="code-actions">
+            <span class="code-env">C# 12 · .NET 8 · 未本地編譯驗證</span>
+            <button type="button" class="btn-copy no-print" data-copy-target="code-9">複製片段</button>
+          </div>
+        </div>
+        <div class="code-sub">可搭配所屬單元專案執行｜.NET 8 Console（04-polymorphism）</div>
+        <div class="manual-copy-box no-print" id="manual-9" hidden>
+          <div class="manual-copy-head">剪貼簿權限受限，請選取下方程式碼後按 Ctrl+C / Cmd+C：</div>
+          <textarea readonly rows="4" aria-label="手動複製程式碼">public class Animal
+{
+    public string Name { get; }
+    public Animal(string name) =&gt; Name = name;
+
+    // virtual 允許子類別依實際型別進行動態覆寫（override）
+    public virtual string Speak() =&gt; $&quot;{Name} 發出一般動物聲音&quot;;
+
+    // overload（多載）：同名但參數數量不同，編譯期即決定呼叫版本
+    public string Speak(int times) =&gt; $&quot;{Speak()}（重複 {times} 次）&quot;;
+}
+
+public class Dog : Animal
+{
+    public Dog(string name) : base(name) { }
+    public override string Speak() =&gt; $&quot;{Name}：汪汪！&quot;;
+}
+
+public class Cat : Animal
+{
+    public Cat(string name) : base(name) { }
+    public override string Speak() =&gt; $&quot;{Name}：喵～&quot;;
+}</textarea>
+        </div>
+        <pre><code id="code-9"><span class="code-line"><span class="ln">3</span><span>public class Animal</span></span><span class="code-line"><span class="ln">4</span><span>{</span></span><span class="code-line"><span class="ln">5</span><span>    public string Name { get; }</span></span><span class="code-line"><span class="ln">6</span><span>    public Animal(string name) =&gt; Name = name;</span></span><span class="code-line"><span class="ln">7</span><span> </span></span><span class="code-line"><span class="ln">8</span><span>    // virtual 允許子類別依實際型別進行動態覆寫（override）</span></span><span class="code-line"><span class="ln">9</span><span>    public virtual string Speak() =&gt; $&quot;{Name} 發出一般動物聲音&quot;;</span></span><span class="code-line"><span class="ln">10</span><span> </span></span><span class="code-line"><span class="ln">11</span><span>    // overload（多載）：同名但參數數量不同，編譯期即決定呼叫版本</span></span><span class="code-line"><span class="ln">12</span><span>    public string Speak(int times) =&gt; $&quot;{Speak()}（重複 {times} 次）&quot;;</span></span><span class="code-line"><span class="ln">13</span><span>}</span></span><span class="code-line"><span class="ln">14</span><span> </span></span><span class="code-line"><span class="ln">15</span><span>public class Dog : Animal</span></span><span class="code-line"><span class="ln">16</span><span>{</span></span><span class="code-line"><span class="ln">17</span><span>    public Dog(string name) : base(name) { }</span></span><span class="code-line"><span class="ln">18</span><span>    public override string Speak() =&gt; $&quot;{Name}：汪汪！&quot;;</span></span><span class="code-line"><span class="ln">19</span><span>}</span></span><span class="code-line"><span class="ln">20</span><span> </span></span><span class="code-line"><span class="ln">21</span><span>public class Cat : Animal</span></span><span class="code-line"><span class="ln">22</span><span>{</span></span><span class="code-line"><span class="ln">23</span><span>    public Cat(string name) : base(name) { }</span></span><span class="code-line"><span class="ln">24</span><span>    public override string Speak() =&gt; $&quot;{Name}：喵～&quot;;</span></span><span class="code-line"><span class="ln">25</span><span>}</span></span></code></pre>
+      </div>
+    <div class="callout"><div class="callout-title">完整程式與互動模擬</div><p>完整檔案清單：04-polymorphism/AnimalChorus.cs、04-polymorphism/Program.cs。需要操作步驟模擬與互動檢查解析，請點上方「回到對應完整教材」。</p></div>
+  </article>
+<article class="slide" data-slide-index="10" aria-label="第 11 頁：05. 抽象類別與介面：為什麼需要這個設計？">
+    <div class="slide-top">
+      <span class="group">第 05 章｜觀念與問題</span>
+      <div class="slide-top-right">
+        <span class="page-badge">第 11 / 23 頁</span>
+        <a class="btn-lesson no-print" href="./#/wiki/abstract-class-and-interface">回到對應完整教材 →</a>
+      </div>
+    </div>
+    <h2>05. 抽象類別與介面：為什麼需要這個設計？</h2>
+    <p class="subtitle">圖形及繪製能力：共用家族基底與行為約定的差異</p>
+    <div class="meta-row"><span>主題 ID：<code>05-abstract-class-and-interface</code></span><span>· 來源 ID：<code>src-ms-csharp-interfaces, src-ms-csharp-inheritance, src-ms-csharp-classes</code></span></div>
+    
+    <ul class="points"><li><span class="num">01</span><span>理解 abstract class 作為「共用家族基底」的角色：不可直接 new，可持有實例欄位與 protected 建構式，並透過 abstract 成員要求子類別提供具體實作。</span></li><li><span class="num">02</span><span>理解 interface 作為「跨類別行為契約」的角色：允許沒有共同父類別的類型（如 Circle 與 TextLabel）同時支援同一組能力，且單一類別可實作多個介面。</span></li><li><span class="num">03</span><span>掌握現代 C#（C# 8+ / C# 12）介面的正確規則：介面不可宣告實例欄位與實例建構式，但允許宣告預設介面成員實作（Default Interface Members）與靜態抽象成員（Static Abstract Members）。</span></li></ul>
+    
+    <div class="callout"><div class="callout-title">核心問題情境</div><p>正在寫一個向量白板程式時，畫布上不只有「圓形（Circle）」「矩形（Rectangle）」，還有不屬於幾何圖形的「文字標籤（TextLabel）」。</p></div>
+  </article>
+<article class="slide" data-slide-index="11" aria-label="第 12 頁：05. 抽象類別與介面：核心 C# 結構與變更影響">
+    <div class="slide-top">
+      <span class="group">第 05 章｜C# 範例片段與比較</span>
+      <div class="slide-top-right">
+        <span class="page-badge">第 12 / 23 頁</span>
+        <a class="btn-lesson no-print" href="./#/wiki/abstract-class-and-interface">回到對應完整教材 →</a>
+      </div>
+    </div>
+    <h2>05. 抽象類別與介面：核心 C# 結構與變更影響</h2>
+    <p class="subtitle">以繪圖畫布上的圖形與文字標籤為情境，釐清 abstract class 與 interface 的職責邊界及現代 C# 介面規範。</p>
+    <div class="meta-row"><span>主題 ID：<code>05-abstract-class-and-interface</code></span><span>· 來源 ID：<code>src-ms-csharp-interfaces, src-ms-csharp-inheritance, src-ms-csharp-classes</code></span></div>
+    
+    <ul class="points"><li><span class="num">01</span><span>只靠單一抽象類別：如果把 ExportJson() 加進 Shape，所有不想支援匯出的幾何圖形都被迫實作；想讓 TextLabel 也匯出就更困難。</span></li><li><span class="num">02</span><span>善用介面拆分能力契約：只需新增 interface IExportable { string ToJson(); }，讓真正需要匯出的類別（例如 Circle : Shape, IDrawable, IExportable）再多掛載一個介面即可，既有 Shape 與其他不支援匯出的類別完全不受干擾。</span></li></ul>
+    <div class="code-card" data-disable-slide-keys="true">
+        <div class="code-head">
+          <span><strong>ShapesAndCapabilities.cs</strong>（第 22–44 行）· 05-abstract-class-and-interface/ShapesAndCapabilities.cs</span>
+          <div class="code-actions">
+            <span class="code-env">C# 12 · .NET 8 · 未本地編譯驗證</span>
+            <button type="button" class="btn-copy no-print" data-copy-target="code-11">複製片段</button>
+          </div>
+        </div>
+        <div class="code-sub">可搭配所屬單元專案執行｜.NET 8 Console（05-abstract-class-and-interface）</div>
+        <div class="manual-copy-box no-print" id="manual-11" hidden>
+          <div class="manual-copy-head">剪貼簿權限受限，請選取下方程式碼後按 Ctrl+C / Cmd+C：</div>
+          <textarea readonly rows="4" aria-label="手動複製程式碼">public interface IDrawable
+{
+    void Draw();
+    string RenderTag() =&gt; &quot;CanvasItem&quot;;
+}
+
+public class Circle : Shape, IDrawable
+{
+    public double Radius { get; }
+    public Circle(string color, double radius) : base(&quot;圓形&quot;, color) =&gt; Radius = radius;
+
+    public override double GetArea() =&gt; Math.PI * Radius * Radius;
+    public void Draw() =&gt; Console.WriteLine($&quot;繪製 {Describe()}｜標籤：{((IDrawable)this).RenderTag()}&quot;);
+}
+
+// 跨不同階層的獨立類別（並非 Shape）也可實作 IDrawable
+public class TextLabel : IDrawable
+{
+    public string Text { get; }
+    public TextLabel(string text) =&gt; Text = text;
+
+    public void Draw() =&gt; Console.WriteLine($&quot;繪製文字標籤：「{Text}」&quot;);
+}</textarea>
+        </div>
+        <pre><code id="code-11"><span class="code-line"><span class="ln">22</span><span>public interface IDrawable</span></span><span class="code-line"><span class="ln">23</span><span>{</span></span><span class="code-line"><span class="ln">24</span><span>    void Draw();</span></span><span class="code-line"><span class="ln">25</span><span>    string RenderTag() =&gt; &quot;CanvasItem&quot;;</span></span><span class="code-line"><span class="ln">26</span><span>}</span></span><span class="code-line"><span class="ln">27</span><span> </span></span><span class="code-line"><span class="ln">28</span><span>public class Circle : Shape, IDrawable</span></span><span class="code-line"><span class="ln">29</span><span>{</span></span><span class="code-line"><span class="ln">30</span><span>    public double Radius { get; }</span></span><span class="code-line"><span class="ln">31</span><span>    public Circle(string color, double radius) : base(&quot;圓形&quot;, color) =&gt; Radius = radius;</span></span><span class="code-line"><span class="ln">32</span><span> </span></span><span class="code-line"><span class="ln">33</span><span>    public override double GetArea() =&gt; Math.PI * Radius * Radius;</span></span><span class="code-line"><span class="ln">34</span><span>    public void Draw() =&gt; Console.WriteLine($&quot;繪製 {Describe()}｜標籤：{((IDrawable)this).RenderTag()}&quot;);</span></span><span class="code-line"><span class="ln">35</span><span>}</span></span><span class="code-line"><span class="ln">36</span><span> </span></span><span class="code-line"><span class="ln">37</span><span>// 跨不同階層的獨立類別（並非 Shape）也可實作 IDrawable</span></span><span class="code-line"><span class="ln">38</span><span>public class TextLabel : IDrawable</span></span><span class="code-line"><span class="ln">39</span><span>{</span></span><span class="code-line"><span class="ln">40</span><span>    public string Text { get; }</span></span><span class="code-line"><span class="ln">41</span><span>    public TextLabel(string text) =&gt; Text = text;</span></span><span class="code-line"><span class="ln">42</span><span> </span></span><span class="code-line"><span class="ln">43</span><span>    public void Draw() =&gt; Console.WriteLine($&quot;繪製文字標籤：「{Text}」&quot;);</span></span><span class="code-line"><span class="ln">44</span><span>}</span></span></code></pre>
+      </div>
+    <div class="callout"><div class="callout-title">完整程式與互動模擬</div><p>完整檔案清單：05-abstract-class-and-interface/ShapesAndCapabilities.cs、05-abstract-class-and-interface/Program.cs。需要操作步驟模擬與互動檢查解析，請點上方「回到對應完整教材」。</p></div>
+  </article>
+<article class="slide" data-slide-index="12" aria-label="第 13 頁：06. 耦合與內聚：為什麼需要這個設計？">
+    <div class="slide-top">
+      <span class="group">第 06 章｜觀念與問題</span>
+      <div class="slide-top-right">
+        <span class="page-badge">第 13 / 23 頁</span>
+        <a class="btn-lesson no-print" href="./#/wiki/coupling-and-cohesion">回到對應完整教材 →</a>
+      </div>
+    </div>
+    <h2>06. 耦合與內聚：為什麼需要這個設計？</h2>
+    <p class="subtitle">訂單計算及通知：職責分離與修改影響範圍</p>
+    <div class="meta-row"><span>主題 ID：<code>06-coupling-and-cohesion</code></span><span>· 來源 ID：<code>src-ms-code-metrics-coupling, src-ms-dotnet-arch-principles, src-ms-csharp-interfaces, src-igouist-oo-series</code></span></div>
+    
+    <ul class="points"><li><span class="num">01</span><span>理解 Visual Studio Code Metrics（src-ms-code-metrics-coupling）對類別耦合（Class Coupling / CBO）與內聚性（Cohesion）的精確定義。</span></li><li><span class="num">02</span><span>區分「消除所有依賴」與「將必要依賴導向抽象（依賴反轉 DIP 與明確依賴原則）」的差別。</span></li><li><span class="num">03</span><span>學會用「需求變更時必須改動的檔案與模組範圍」來檢視耦合度，而不是依賴無根據的主觀分數。</span></li></ul>
+    
+    <div class="callout"><div class="callout-title">核心問題情境</div><p>剛開始寫電商訂單結帳功能時，你寫了一個看起來很簡潔的 TightOrderProcessor：在 PlaceOrder 方法裡面，先算 5% 營業稅，接著 new EmailSender() 寄出訂單成立信件。</p></div>
+  </article>
+<article class="slide" data-slide-index="13" aria-label="第 14 頁：06. 耦合與內聚：核心 C# 結構與變更影響">
+    <div class="slide-top">
+      <span class="group">第 06 章｜C# 範例片段與比較</span>
+      <div class="slide-top-right">
+        <span class="page-badge">第 14 / 23 頁</span>
+        <a class="btn-lesson no-print" href="./#/wiki/coupling-and-cohesion">回到對應完整教材 →</a>
+      </div>
+    </div>
+    <h2>06. 耦合與內聚：核心 C# 結構與變更影響</h2>
+    <p class="subtitle">透過訂單計算與通知流程的緊密／鬆散寫法對比，學習高內聚職責分工、依賴反轉原則與控制變更影響範圍。</p>
+    <div class="meta-row"><span>主題 ID：<code>06-coupling-and-cohesion</code></span><span>· 來源 ID：<code>src-ms-code-metrics-coupling, src-ms-dotnet-arch-principles, src-ms-csharp-interfaces, src-igouist-oo-series</code></span></div>
+    
+    <ul class="points"><li><span class="num">01</span><span>緊密耦合版（TightOrderProcessor）：必須打開 TightOrderProcessor.cs 修改核心結帳方法、增加第二個具體物件建立與呼叫，甚至加上 if/else 旗標判斷；修改後連原本已經測過的稅額計算與既有寄信流程都要重新驗證。</span></li><li><span class="num">02</span><span>低耦合版（OrderProcessor + INotifier）：只需新增一個實作 INotifier 的組合通知器（內部轉呼叫多組 INotifier）並在組裝處傳入；PriceCalculator 與 OrderProcessor 核心程式碼零修改，變更影響被有效隔離在通知邊界內。</span></li></ul>
+    <div class="code-card" data-disable-slide-keys="true">
+        <div class="code-head">
+          <span><strong>DecoupledOrder.cs</strong>（第 32–49 行）· 06-coupling-and-cohesion/DecoupledOrder.cs</span>
+          <div class="code-actions">
+            <span class="code-env">C# 12 · .NET 8 · 未本地編譯驗證</span>
+            <button type="button" class="btn-copy no-print" data-copy-target="code-13">複製片段</button>
+          </div>
+        </div>
+        <div class="code-sub">可搭配所屬單元專案執行｜.NET 8 Console（06-coupling-and-cohesion）</div>
+        <div class="manual-copy-box no-print" id="manual-13" hidden>
+          <div class="manual-copy-head">剪貼簿權限受限，請選取下方程式碼後按 Ctrl+C / Cmd+C：</div>
+          <textarea readonly rows="4" aria-label="手動複製程式碼">// 3. 內聚職責二：協調訂單流程（新增簡訊管道時，本類別一行都不必改）
+public class OrderProcessor
+{
+    private readonly PriceCalculator _calculator;
+    private readonly INotifier _notifier;
+
+    public OrderProcessor(PriceCalculator calculator, INotifier notifier)
+    {
+        _calculator = calculator;
+        _notifier = notifier;
+    }
+
+    public void PlaceOrder(string customer, decimal subtotal)
+    {
+        decimal total = _calculator.CalculateTotal(subtotal);
+        _notifier.Notify(customer, $&quot;訂單成立，含稅總額 {total:N0} 元&quot;);
+    }
+}</textarea>
+        </div>
+        <pre><code id="code-13"><span class="code-line"><span class="ln">32</span><span>// 3. 內聚職責二：協調訂單流程（新增簡訊管道時，本類別一行都不必改）</span></span><span class="code-line"><span class="ln">33</span><span>public class OrderProcessor</span></span><span class="code-line"><span class="ln">34</span><span>{</span></span><span class="code-line"><span class="ln">35</span><span>    private readonly PriceCalculator _calculator;</span></span><span class="code-line"><span class="ln">36</span><span>    private readonly INotifier _notifier;</span></span><span class="code-line"><span class="ln">37</span><span> </span></span><span class="code-line"><span class="ln">38</span><span>    public OrderProcessor(PriceCalculator calculator, INotifier notifier)</span></span><span class="code-line"><span class="ln">39</span><span>    {</span></span><span class="code-line"><span class="ln">40</span><span>        _calculator = calculator;</span></span><span class="code-line"><span class="ln">41</span><span>        _notifier = notifier;</span></span><span class="code-line"><span class="ln">42</span><span>    }</span></span><span class="code-line"><span class="ln">43</span><span> </span></span><span class="code-line"><span class="ln">44</span><span>    public void PlaceOrder(string customer, decimal subtotal)</span></span><span class="code-line"><span class="ln">45</span><span>    {</span></span><span class="code-line"><span class="ln">46</span><span>        decimal total = _calculator.CalculateTotal(subtotal);</span></span><span class="code-line"><span class="ln">47</span><span>        _notifier.Notify(customer, $&quot;訂單成立，含稅總額 {total:N0} 元&quot;);</span></span><span class="code-line"><span class="ln">48</span><span>    }</span></span><span class="code-line"><span class="ln">49</span><span>}</span></span></code></pre>
+      </div>
+    <div class="callout"><div class="callout-title">完整程式與互動模擬</div><p>完整檔案清單：06-coupling-and-cohesion/DecoupledOrder.cs、06-coupling-and-cohesion/Program.cs、06-coupling-and-cohesion/TightCoupledOrder.cs。需要操作步驟模擬與互動檢查解析，請點上方「回到對應完整教材」。</p></div>
+  </article>
+<article class="slide" data-slide-index="14" aria-label="第 15 頁：07. MVC 架構：為什麼需要這個設計？">
+    <div class="slide-top">
+      <span class="group">第 07 章｜觀念與問題</span>
+      <div class="slide-top-right">
+        <span class="page-badge">第 15 / 23 頁</span>
+        <a class="btn-lesson no-print" href="./#/wiki/mvc-architecture">回到對應完整教材 →</a>
+      </div>
+    </div>
+    <h2>07. MVC 架構：為什麼需要這個設計？</h2>
+    <p class="subtitle">圖書查詢：以網頁請求說明 Model、View 與 Controller</p>
+    <div class="meta-row"><span>主題 ID：<code>07-mvc-architecture</code></span><span>· 來源 ID：<code>src-ms-aspnet-mvc, src-ms-dotnet-arch-principles</code></span></div>
+    
+    <ul class="points"><li><span class="num">01</span><span>明確區分 Model（應用狀態與商業查詢規則）、View（最小化邏輯的 HTML 呈現模板）與 Controller（接收輸入、協調 Model、決定 View）的職責邊界。</span></li><li><span class="num">02</span><span>追蹤一筆 HTTP GET 請求（/Books/Index?keyword=MVC）在 ASP.NET Core MVC 中的實際執行順序。</span></li><li><span class="num">03</span><span>掌握關鍵的單向依賴原則：View 與 Controller 都依賴 Model，但 Model 絕對不依賴 Controller 或 View。</span></li></ul>
+    
+    <div class="callout"><div class="callout-title">核心問題情境</div><p>前面六章我們都在寫 Console 主控台範例，但當程式要變成「圖書館網頁查詢系統」時，如果把「解析網址參數（?keyword=MVC）」、「比對書名與分類的邏輯」以及「拼接 &lt;h1&gt;、&lt;ul&gt;&lt;li&gt; HTML 標籤」全都塞在同一個處理函式裡：</p></div>
+  </article>
+<article class="slide" data-slide-index="15" aria-label="第 16 頁：07. MVC 架構：核心 C# 結構與變更影響">
+    <div class="slide-top">
+      <span class="group">第 07 章｜C# 範例片段與比較</span>
+      <div class="slide-top-right">
+        <span class="page-badge">第 16 / 23 頁</span>
+        <a class="btn-lesson no-print" href="./#/wiki/mvc-architecture">回到對應完整教材 →</a>
+      </div>
+    </div>
+    <h2>07. MVC 架構：核心 C# 結構與變更影響</h2>
+    <p class="subtitle">以 ASP.NET Core MVC 圖書查詢為情境，追蹤 HTTP 請求經過 Controller、Model 與 View 的完整流程與依賴方向。</p>
+    <div class="meta-row"><span>主題 ID：<code>07-mvc-architecture</code></span><span>· 來源 ID：<code>src-ms-aspnet-mvc, src-ms-dotnet-arch-principles</code></span></div>
+    
+    <ul class="points"><li><span class="num">01</span><span>混在一起寫的傳統單檔頁面：改 HTML 版面時得在資料迴圈裡閃躲查詢邏輯；改搜尋條件時又要在一堆字串或模板語法裡找 Where(...) 位置。</span></li><li><span class="num">02</span><span>遵循 ASP.NET Core MVC 分層後：</span></li></ul>
+    <div class="code-card" data-disable-slide-keys="true">
+        <div class="code-head">
+          <span><strong>BooksController.cs</strong>（第 7–18 行）· 07-mvc-architecture/Controllers/BooksController.cs</span>
+          <div class="code-actions">
+            <span class="code-env">C# 12 · .NET 8 · 未本地編譯驗證</span>
+            <button type="button" class="btn-copy no-print" data-copy-target="code-15">複製片段</button>
+          </div>
+        </div>
+        <div class="code-sub">需放在指定專案｜ASP.NET Core MVC Web App（.NET 8，不可混入 Console）</div>
+        <div class="manual-copy-box no-print" id="manual-15" hidden>
+          <div class="manual-copy-head">剪貼簿權限受限，請選取下方程式碼後按 Ctrl+C / Cmd+C：</div>
+          <textarea readonly rows="4" aria-label="手動複製程式碼">public class BooksController : Controller
+{
+    private readonly BookCatalogModel _catalog = new();
+
+    [HttpGet]
+    public IActionResult Index(string? keyword)
+    {
+        var results = _catalog.Search(keyword);
+        ViewData[&quot;Keyword&quot;] = keyword ?? string.Empty;
+        return View(results); // 傳遞結果給 Views/Books/Index.cshtml
+    }
+}</textarea>
+        </div>
+        <pre><code id="code-15"><span class="code-line"><span class="ln">7</span><span>public class BooksController : Controller</span></span><span class="code-line"><span class="ln">8</span><span>{</span></span><span class="code-line"><span class="ln">9</span><span>    private readonly BookCatalogModel _catalog = new();</span></span><span class="code-line"><span class="ln">10</span><span> </span></span><span class="code-line"><span class="ln">11</span><span>    [HttpGet]</span></span><span class="code-line"><span class="ln">12</span><span>    public IActionResult Index(string? keyword)</span></span><span class="code-line"><span class="ln">13</span><span>    {</span></span><span class="code-line"><span class="ln">14</span><span>        var results = _catalog.Search(keyword);</span></span><span class="code-line"><span class="ln">15</span><span>        ViewData[&quot;Keyword&quot;] = keyword ?? string.Empty;</span></span><span class="code-line"><span class="ln">16</span><span>        return View(results); // 傳遞結果給 Views/Books/Index.cshtml</span></span><span class="code-line"><span class="ln">17</span><span>    }</span></span><span class="code-line"><span class="ln">18</span><span>}</span></span></code></pre>
+      </div>
+    <div class="callout"><div class="callout-title">完整程式與互動模擬</div><p>完整檔案清單：07-mvc-architecture/Controllers/BooksController.cs、07-mvc-architecture/Models/BookCatalogModel.cs、07-mvc-architecture/Views/Books/Index.cshtml、07-mvc-architecture/Program.cs。需要操作步驟模擬與互動檢查解析，請點上方「回到對應完整教材」。</p></div>
+  </article>
+<article class="slide" data-slide-index="16" aria-label="第 17 頁：08. 整合與重構：為什麼需要這個設計？">
+    <div class="slide-top">
+      <span class="group">第 08 章｜觀念與問題</span>
+      <div class="slide-top-right">
+        <span class="page-badge">第 17 / 23 頁</span>
+        <a class="btn-lesson no-print" href="./#/wiki/integration-and-refactoring">回到對應完整教材 →</a>
+      </div>
+    </div>
+    <h2>08. 整合與重構：為什麼需要這個設計？</h2>
+    <p class="subtitle">待辦事項系統：整理分工並迎接新需求</p>
+    <div class="meta-row"><span>主題 ID：<code>08-integration-and-refactoring</code></span><span>· 來源 ID：<code>src-ms-dotnet-arch-principles, src-ms-aspnet-mvc</code></span></div>
+    
+    <ul class="points"><li><span class="num">01</span><span>辨識混雜程式碼中的三種不同變化軸：資料與不變量規則、集合操作協調、畫面呈現輸出。</span></li><li><span class="num">02</span><span>綜合運用第 01–07 章的技術，重構出 TodoItem（封裝狀態）、TodoService（操作協調）與 TodoConsoleView（畫面呈現）。</span></li><li><span class="num">03</span><span>實際驗證加入新需求「截止日期（DueDate）」時，重構前後的修改影響範圍差異。</span></li></ul>
+    
+    <div class="callout"><div class="callout-title">核心問題情境</div><p>當程式還只有 15 行時，很多人習慣寫出像 MixedTodoBefore.cs 這樣的結構：用一個 List&lt;string&gt; 存 &quot;[ ] 閱讀封裝章節&quot; 字串，同時在同一個 Run() 方法裡面直接印出主控台文字。</p></div>
+  </article>
+<article class="slide" data-slide-index="17" aria-label="第 18 頁：08. 整合與重構：核心 C# 結構與變更影響">
+    <div class="slide-top">
+      <span class="group">第 08 章｜C# 範例片段與比較</span>
+      <div class="slide-top-right">
+        <span class="page-badge">第 18 / 23 頁</span>
+        <a class="btn-lesson no-print" href="./#/wiki/integration-and-refactoring">回到對應完整教材 →</a>
+      </div>
+    </div>
+    <h2>08. 整合與重構：核心 C# 結構與變更影響</h2>
+    <p class="subtitle">綜合運用封裝、低耦合與分層概念，將單檔混雜的待辦事項程式重構為三層清楚分工，並實測加入「截止日期」新需求。</p>
+    <div class="meta-row"><span>主題 ID：<code>08-integration-and-refactoring</code></span><span>· 來源 ID：<code>src-ms-dotnet-arch-principles, src-ms-aspnet-mvc</code></span></div>
+    
+    <ul class="points"><li><span class="num">01</span><span>重構前（MixedTodoBefore）：你必須重新設計字串儲存格式（例如 &quot;[ ] 2026-11-20 | 閱讀筆記&quot;），所有新增、切換 [x]、解析、輸出顯示的程式碼全部連坐修改。</span></li><li><span class="num">02</span><span>重構後（三層分工）：</span></li></ul>
+    <div class="code-card" data-disable-slide-keys="true">
+        <div class="code-head">
+          <span><strong>RefactoredTodo.cs</strong>（第 27–50 行）· 08-integration-and-refactoring/RefactoredTodo.cs</span>
+          <div class="code-actions">
+            <span class="code-env">C# 12 · .NET 8 · 未本地編譯驗證</span>
+            <button type="button" class="btn-copy no-print" data-copy-target="code-17">複製片段</button>
+          </div>
+        </div>
+        <div class="code-sub">可搭配所屬單元專案執行｜.NET 8 Console（08-integration-and-refactoring）</div>
+        <div class="manual-copy-box no-print" id="manual-17" hidden>
+          <div class="manual-copy-head">剪貼簿權限受限，請選取下方程式碼後按 Ctrl+C / Cmd+C：</div>
+          <textarea readonly rows="4" aria-label="手動複製程式碼">public class TodoService
+{
+    private readonly List&lt;TodoItem&gt; _items = new();
+    private int _nextId = 1;
+
+    public IReadOnlyList&lt;TodoItem&gt; Items =&gt; _items;
+
+    public TodoItem Add(string title, string? dueDate = null)
+    {
+        var item = new TodoItem(_nextId++, title, dueDate);
+        _items.Add(item);
+        return item;
+    }
+
+    public bool Toggle(int id)
+    {
+        var target = _items.Find(x =&gt; x.Id == id);
+        if (target is null) return false;
+        target.ToggleDone();
+        return true;
+    }
+
+    public bool Remove(int id) =&gt; _items.RemoveAll(x =&gt; x.Id == id) &gt; 0;
+}</textarea>
+        </div>
+        <pre><code id="code-17"><span class="code-line"><span class="ln">27</span><span>public class TodoService</span></span><span class="code-line"><span class="ln">28</span><span>{</span></span><span class="code-line"><span class="ln">29</span><span>    private readonly List&lt;TodoItem&gt; _items = new();</span></span><span class="code-line"><span class="ln">30</span><span>    private int _nextId = 1;</span></span><span class="code-line"><span class="ln">31</span><span> </span></span><span class="code-line"><span class="ln">32</span><span>    public IReadOnlyList&lt;TodoItem&gt; Items =&gt; _items;</span></span><span class="code-line"><span class="ln">33</span><span> </span></span><span class="code-line"><span class="ln">34</span><span>    public TodoItem Add(string title, string? dueDate = null)</span></span><span class="code-line"><span class="ln">35</span><span>    {</span></span><span class="code-line"><span class="ln">36</span><span>        var item = new TodoItem(_nextId++, title, dueDate);</span></span><span class="code-line"><span class="ln">37</span><span>        _items.Add(item);</span></span><span class="code-line"><span class="ln">38</span><span>        return item;</span></span><span class="code-line"><span class="ln">39</span><span>    }</span></span><span class="code-line"><span class="ln">40</span><span> </span></span><span class="code-line"><span class="ln">41</span><span>    public bool Toggle(int id)</span></span><span class="code-line"><span class="ln">42</span><span>    {</span></span><span class="code-line"><span class="ln">43</span><span>        var target = _items.Find(x =&gt; x.Id == id);</span></span><span class="code-line"><span class="ln">44</span><span>        if (target is null) return false;</span></span><span class="code-line"><span class="ln">45</span><span>        target.ToggleDone();</span></span><span class="code-line"><span class="ln">46</span><span>        return true;</span></span><span class="code-line"><span class="ln">47</span><span>    }</span></span><span class="code-line"><span class="ln">48</span><span> </span></span><span class="code-line"><span class="ln">49</span><span>    public bool Remove(int id) =&gt; _items.RemoveAll(x =&gt; x.Id == id) &gt; 0;</span></span><span class="code-line"><span class="ln">50</span><span>}</span></span></code></pre>
+      </div>
+    <div class="callout"><div class="callout-title">完整程式與互動模擬</div><p>完整檔案清單：08-integration-and-refactoring/RefactoredTodo.cs、08-integration-and-refactoring/Program.cs、08-integration-and-refactoring/MixedTodoBefore.cs。需要操作步驟模擬與互動檢查解析，請點上方「回到對應完整教材」。</p></div>
+  </article>
+<article class="slide" data-slide-index="18" aria-label="第 19 頁：09. 依賴注入入門：為什麼需要這個設計？">
+    <div class="slide-top">
+      <span class="group">第 09 章｜觀念與問題</span>
+      <div class="slide-top-right">
+        <span class="page-badge">第 19 / 23 頁</span>
+        <a class="btn-lesson no-print" href="./#/wiki/dependency-injection">回到對應完整教材 →</a>
+      </div>
+    </div>
+    <h2>09. 依賴注入入門：為什麼需要這個設計？</h2>
+    <p class="subtitle">檔案處理服務替換紀錄方式：從外部傳入協作物件</p>
+    <div class="meta-row"><span>主題 ID：<code>09-dependency-injection</code></span><span>· 來源 ID：<code>src-ms-dotnet-di, src-ms-dotnet-di-guidelines, src-ms-dotnet-arch-principles, src-ms-csharp-interfaces</code></span></div>
+    
+    <ul class="points"><li><span class="num">01</span><span>理解建構式注入（Constructor Injection）如何讓類別只專注自己的業務流程，把「決定並建立協作物件」的責任交給外部組裝端（Composition Root）。</span></li><li><span class="num">02</span><span>清楚區分第 06 章的依賴反轉原則（DIP）與本章的依賴注入（DI）：原則與實踐手段各指什麼、為何兩者常搭配使用卻不是同一個名詞。</span></li><li><span class="num">03</span><span>辨識「不使用 DI 容器的手動純建構式注入」與「使用 .NET IServiceCollection 容器自動組裝」之間的關係，避免誤以為必須安裝容器套件才算 DI。</span></li></ul>
+    
+    <div class="callout"><div class="callout-title">核心問題情境</div><p>假設你正在開發一支「批次檔案處理服務（FileProcessor）」，每當處理一份匯入檔（例如 orders_2026.csv）時，都要寫下處理進度與驗證失敗的紀錄。</p></div>
+  </article>
+<article class="slide" data-slide-index="19" aria-label="第 20 頁：09. 依賴注入入門：核心 C# 結構與變更影響">
+    <div class="slide-top">
+      <span class="group">第 09 章｜C# 範例片段與比較</span>
+      <div class="slide-top-right">
+        <span class="page-badge">第 20 / 23 頁</span>
+        <a class="btn-lesson no-print" href="./#/wiki/dependency-injection">回到對應完整教材 →</a>
+      </div>
+    </div>
+    <h2>09. 依賴注入入門：核心 C# 結構與變更影響</h2>
+    <p class="subtitle">以檔案處理服務替換不同紀錄方式為情境，學習建構式注入如何把建立相依物件的責任移交外部，並清楚區分依賴注入（DI）與依賴反轉（DIP）。</p>
+    <div class="meta-row"><span>主題 ID：<code>09-dependency-injection</code></span><span>· 來源 ID：<code>src-ms-dotnet-di, src-ms-dotnet-di-guidelines, src-ms-dotnet-arch-principles, src-ms-csharp-interfaces</code></span></div>
+    
+    <ul class="points"><li><span class="num">01</span><span>內部硬編碼版（TightFileProcessor）：必須修改 TightFileProcessor.cs 內部欄位與建構流程，若為了支援兩種環境而在類別內加入 if (useFile) 旗標，會讓 TightFileProcessor 同時耦合更多具體類別與設定細節。</span></li><li><span class="num">02</span><span>建構式注入版（FileProcessor + IProcessingLogger）：FileProcessor.cs 一行都不需要改。只需新增實作 IProcessingLogger 的新類別，並在 Program.cs 組裝端（或 DI 容器註冊處）替換傳入的實例即可。</span></li></ul>
+    <div class="code-card" data-disable-slide-keys="true">
+        <div class="code-head">
+          <span><strong>FileProcessingDI.cs</strong>（第 45–66 行）· 09-dependency-injection/FileProcessingDI.cs</span>
+          <div class="code-actions">
+            <span class="code-env">C# 12 · .NET 8 · 未本地編譯驗證</span>
+            <button type="button" class="btn-copy no-print" data-copy-target="code-19">複製片段</button>
+          </div>
+        </div>
+        <div class="code-sub">可搭配所屬單元專案執行｜.NET 8 Console（09-dependency-injection）</div>
+        <div class="manual-copy-box no-print" id="manual-19" hidden>
+          <div class="manual-copy-head">剪貼簿權限受限，請選取下方程式碼後按 Ctrl+C / Cmd+C：</div>
+          <textarea readonly rows="4" aria-label="手動複製程式碼">public sealed class FileProcessor
+{
+    private readonly IProcessingLogger _logger;
+
+    public FileProcessor(IProcessingLogger logger)
+    {
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    }
+
+    public bool ProcessFile(string fileName, int lineCount)
+    {
+        if (string.IsNullOrWhiteSpace(fileName) || lineCount &lt;= 0)
+        {
+            _logger.Log(&quot;檔案驗證失敗：檔名不可空白，且行數必須大於 0。&quot;);
+            return false;
+        }
+
+        _logger.Log($&quot;開始處理 {fileName}（共 {lineCount} 行）&quot;);
+        _logger.Log($&quot;完成處理 {fileName}，已通過格式檢查。&quot;);
+        return true;
+    }
+}</textarea>
+        </div>
+        <pre><code id="code-19"><span class="code-line"><span class="ln">45</span><span>public sealed class FileProcessor</span></span><span class="code-line"><span class="ln">46</span><span>{</span></span><span class="code-line"><span class="ln">47</span><span>    private readonly IProcessingLogger _logger;</span></span><span class="code-line"><span class="ln">48</span><span> </span></span><span class="code-line"><span class="ln">49</span><span>    public FileProcessor(IProcessingLogger logger)</span></span><span class="code-line"><span class="ln">50</span><span>    {</span></span><span class="code-line"><span class="ln">51</span><span>        _logger = logger ?? throw new ArgumentNullException(nameof(logger));</span></span><span class="code-line"><span class="ln">52</span><span>    }</span></span><span class="code-line"><span class="ln">53</span><span> </span></span><span class="code-line"><span class="ln">54</span><span>    public bool ProcessFile(string fileName, int lineCount)</span></span><span class="code-line"><span class="ln">55</span><span>    {</span></span><span class="code-line"><span class="ln">56</span><span>        if (string.IsNullOrWhiteSpace(fileName) || lineCount &lt;= 0)</span></span><span class="code-line"><span class="ln">57</span><span>        {</span></span><span class="code-line"><span class="ln">58</span><span>            _logger.Log(&quot;檔案驗證失敗：檔名不可空白，且行數必須大於 0。&quot;);</span></span><span class="code-line"><span class="ln">59</span><span>            return false;</span></span><span class="code-line"><span class="ln">60</span><span>        }</span></span><span class="code-line"><span class="ln">61</span><span> </span></span><span class="code-line"><span class="ln">62</span><span>        _logger.Log($&quot;開始處理 {fileName}（共 {lineCount} 行）&quot;);</span></span><span class="code-line"><span class="ln">63</span><span>        _logger.Log($&quot;完成處理 {fileName}，已通過格式檢查。&quot;);</span></span><span class="code-line"><span class="ln">64</span><span>        return true;</span></span><span class="code-line"><span class="ln">65</span><span>    }</span></span><span class="code-line"><span class="ln">66</span><span>}</span></span></code></pre>
+      </div>
+    <div class="callout"><div class="callout-title">完整程式與互動模擬</div><p>完整檔案清單：09-dependency-injection/FileProcessingDI.cs、09-dependency-injection/Program.cs、09-dependency-injection/TightFileProcessor.cs。需要操作步驟模擬與互動檢查解析，請點上方「回到對應完整教材」。</p></div>
+  </article>
+<article class="slide" data-slide-index="20" aria-label="第 21 頁：一次釐清：OOP、低耦合、MVC 與網頁渲染維度">
+    <div class="slide-top">
+      <span class="group">總結｜跨章維度對照</span>
+      <div class="slide-top-right">
+        <span class="page-badge">第 21 / 23 頁</span>
+        <a class="btn-lesson no-print" href="./#/">回到知識庫首頁 →</a>
+      </div>
+    </div>
+    <h2>一次釐清：OOP、低耦合、MVC 與網頁渲染維度</h2>
+    <p class="subtitle">不同層級的設計工具各司其職，避免混為一談</p>
+    
+    
+    <ul class="points"><li><span class="num">01</span><span>OOP（第 01–05 章）：以類別、封裝、組合、多型與介面組織個別物件與能力契約。</span></li><li><span class="num">02</span><span>低耦合與 DI（第 06、09 章）：以依賴反轉原則（DIP）面向介面，再用建構式注入（DI）由外部組裝實例。</span></li><li><span class="num">03</span><span>MVC（第 07 章）：將應用切為 Model（規則狀態）、Controller（協調）、View（呈現）；Model 不依賴 View/Controller。</span></li><li><span class="num">04</span><span>渲染維度（SSR / SPA）：處理 HTML 在伺服器或瀏覽器生成；第 07 章進階歷史對照因 Medium 403 標記待驗證。</span></li></ul>
+    
+    <div class="callout"><div class="callout-title">延伸整合實戰（第 08–09 章）</div><p>重構待辦系統後，即可進一步以第 09 章「建構式注入」把服務所需紀錄器或儲存介面交由組裝端傳入。</p></div>
+  </article>
+<article class="slide" data-slide-index="21" aria-label="第 22 頁：知識來源 Ingest 與環境驗證實況">
+    <div class="slide-top">
+      <span class="group">總結｜來源與驗證透明紀錄</span>
+      <div class="slide-top-right">
+        <span class="page-badge">第 22 / 23 頁</span>
+        <a class="btn-lesson no-print" href="./#/">回到知識庫首頁 →</a>
+      </div>
+    </div>
+    <h2>知識來源 Ingest 與環境驗證實況</h2>
+    <p class="subtitle">依據 sources/registry.json（Schema v1.1.0 · 更新 2026-11-14）</p>
+    
+    
+    <ul class="points"><li><span class="num">01</span><span>已實讀整合（ingested）主題／補充來源共 10 篇：src-ms-csharp-classes、src-ms-csharp-inheritance、src-ms-csharp-polymorphism、src-ms-csharp-interfaces、src-ms-code-metrics-coupling、src-ms-aspnet-mvc、src-ms-dotnet-arch-principles、src-igouist-oo-series、src-ms-dotnet-di、src-ms-dotnet-di-guidelines。</span></li><li><span class="num">02</span><span>方法論參考（另計，不列入主題數）共 2 篇：src-ref-karpathy-llm-wiki、src-ref-farza-wiki-skill。</span></li><li><span class="num">03</span><span>存取受阻（unavailable，readDate: null）共 2 篇：src-medium-oop-concept、src-medium-mvc-spa-ssr（Medium HTTP 403）。</span></li><li><span class="num">04</span><span>待讀取（pending）共 1 篇：src-ms-csharp-oop；C# 編譯狀態為 unverified-no-dotnet。</span></li></ul>
+    
+    <div class="callout"><div class="callout-title">嚴格誠實原則</div><p>凡未取得正文之網址一律保持 readDate: null，不以搜尋摘要充數；無 .NET SDK 環境亦明確揭露未本地編譯。</p></div>
+  </article>
+<article class="slide" data-slide-index="22" aria-label="第 23 頁：前往知識庫操作模擬，並檢視製作流程與擴充驗證紀錄">
+    <div class="slide-top">
+      <span class="group">結語｜互動實驗與擴充實證</span>
+      <div class="slide-top-right">
+        <span class="page-badge">第 23 / 23 頁</span>
+        <a class="btn-lesson no-print" href="./#/">回到知識庫首頁 →</a>
+      </div>
+    </div>
+    <h2>前往知識庫操作模擬，並檢視製作流程與擴充驗證紀錄</h2>
+    <p class="subtitle">教材、簡報、Workflow 與驗證紀錄共同構成可持續維護的 LLM Wiki</p>
+    
+    
+    <ul class="points"><li><span class="num">01</span><span>互動概念模擬：第 01–09 章皆配有雙欄程式碼高亮模擬器與 2 題可展開檢核解析。</span></li><li><span class="num">02</span><span>工作流程追蹤：前往主網站「資料來源與製作流程」查看 A–F 六階段迴圈圖與驗證反思。</span></li><li><span class="num">03</span><span>擴充實證完成：已依 AGENTS.md 新增第 09 章「依賴注入入門」並自動匯入知識庫、搜尋與本簡報。</span></li><li><span class="num">04</span><span>列印與離線保存：點擊上方「列印 / 另存 PDF」可展開全部 23 頁自動分頁排版輸出。</span></li></ul>
+    
+    
+  </article>
+    </main>
+
+    <div class="nav-bottom no-print">
+      <button type="button" id="btn-prev">← 上一頁</button>
+      <span class="kbd-hint">
+        <span id="page-counter">第 1 / 23 頁</span> · 鍵盤 <kbd>←</kbd> <kbd>→</kbd> 翻頁
+      </span>
+      <button type="button" id="btn-next" class="primary">下一頁 →</button>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const slideEls = Array.from(document.querySelectorAll('.slide'));
+      const tocButtons = Array.from(document.querySelectorAll('.toc-item'));
+      const btnPrev = document.getElementById('btn-prev');
+      const btnNext = document.getElementById('btn-next');
+      const btnToc = document.getElementById('btn-toc');
+      const btnTocClose = document.getElementById('btn-toc-close');
+      const tocPanel = document.getElementById('toc-panel');
+      const btnFs = document.getElementById('btn-fs');
+      const btnPrint = document.getElementById('btn-print');
+      const progressFill = document.getElementById('progress-fill');
+      const pageCounter = document.getElementById('page-counter');
+      const notice = document.getElementById('notice');
+      let current = 0;
+
+      function showNotice(msg) {
+        notice.textContent = msg;
+        notice.hidden = false;
+      }
+
+      function render(idx) {
+        current = Math.max(0, Math.min(slideEls.length - 1, idx));
+        slideEls.forEach((el, i) => el.classList.toggle('is-active', i === current));
+        tocButtons.forEach((btn, i) => btn.classList.toggle('is-current', i === current));
+        btnPrev.disabled = current === 0;
+        btnNext.disabled = current === slideEls.length - 1;
+        const pct = Math.round(((current + 1) / slideEls.length) * 100);
+        progressFill.style.width = pct + '%';
+        pageCounter.textContent = '第 ' + (current + 1) + ' / ' + slideEls.length + ' 頁';
+      }
+
+      btnPrev.addEventListener('click', () => render(current - 1));
+      btnNext.addEventListener('click', () => render(current + 1));
+      btnToc.addEventListener('click', () => { tocPanel.hidden = !tocPanel.hidden; });
+      btnTocClose.addEventListener('click', () => { tocPanel.hidden = true; });
+      tocButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          render(Number(btn.dataset.jump || 0));
+          tocPanel.hidden = true;
+        });
+      });
+
+      btnFs.addEventListener('click', async () => {
+        if (document.fullscreenElement) {
+          try { await document.exitFullscreen(); } catch {}
+          return;
+        }
+        if (document.body.classList.contains('focus-mode')) {
+          document.body.classList.remove('focus-mode');
+          notice.hidden = true;
+          return;
+        }
+        if (document.fullscreenEnabled && document.documentElement.requestFullscreen) {
+          try {
+            await document.documentElement.requestFullscreen();
+            return;
+          } catch {}
+        }
+        document.body.classList.add('focus-mode');
+        showNotice('此環境不允許原生全螢幕，已改用「專注閱讀模式」。再按一次「全螢幕 / 專注檢視」即可恢復。');
+      });
+
+      btnPrint.addEventListener('click', () => {
+        showNotice('列印時會自動展開全部 ' + slideEls.length + ' 頁投影片並隱藏操作按鈕，請選擇「另存為 PDF」。');
+        try { window.print(); } catch {}
+      });
+
+      document.querySelectorAll('.btn-copy').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          const idx = btn.getAttribute('data-copy-target').replace('code-', '');
+          const codeEl = document.getElementById('code-' + idx);
+          const text = Array.from(codeEl.querySelectorAll('.code-line'))
+            .map((lineEl) => lineEl.lastElementChild.textContent)
+            .join('\n');
+
+          if (navigator.clipboard && window.isSecureContext) {
+            try {
+              await navigator.clipboard.writeText(text);
+              btn.textContent = '已複製';
+              setTimeout(() => (btn.textContent = '複製片段'), 1600);
+              return;
+            } catch {}
+          }
+          try {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.left = '-9999px';
+            document.body.appendChild(ta);
+            ta.select();
+            const ok = document.execCommand('copy');
+            document.body.removeChild(ta);
+            if (ok) {
+              btn.textContent = '已複製';
+              setTimeout(() => (btn.textContent = '複製片段'), 1600);
+              return;
+            }
+          } catch {}
+          const manualBox = document.getElementById('manual-' + idx);
+          if (manualBox) manualBox.hidden = !manualBox.hidden;
+        });
+      });
+
+      window.addEventListener('keydown', (e) => {
+        if (e.ctrlKey || e.metaKey || e.altKey || e.shiftKey) return;
+        const t = e.target;
+        if (t instanceof HTMLElement) {
+          const tag = t.tagName.toLowerCase();
+          if (tag === 'input' || tag === 'textarea' || tag === 'select' || t.isContentEditable) return;
+          if (t.closest('[data-disable-slide-keys="true"]')) return;
+        }
+        if (e.key === 'ArrowLeft') { e.preventDefault(); render(current - 1); }
+        else if (e.key === 'ArrowRight') { e.preventDefault(); render(current + 1); }
+      });
+
+      render(0);
+    })();
+  </script>
+</body>
+</html>

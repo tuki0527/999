@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-sans: 'Plus Jakarta Sans', 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+
+  html {
+    font-family: var(--font-sans);
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: #F6F7FB;
+    color: #1F2937;
+    overflow-x: clip;
+  }
+
+  code,
+  pre,
+  kbd {
+    font-family: var(--font-mono);
+  }
+}
+
+.prose-reading {
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: #1F2937;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Focus mode fallback when Fullscreen API is blocked or unavailable */
+body.slides-focus-mode header,
+body.slides-focus-mode footer {
+  display: none !important;
+}
+
+/* Print-only slide deck hidden on screen */
+.print-only-deck {
+  display: none;
+}
+
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 12mm;
+  }
+
+  body {
+    background-color: #FFFFFF !important;
+    color: #111827 !important;
+  }
+
+  header,
+  footer,
+  .no-print {
+    display: none !important;
+  }
+
+  .print-only-deck {
+    display: block !important;
+  }
+
+  .print-slide-page {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    break-after: page;
+    page-break-after: always;
+    box-shadow: none !important;
+    border: 1px solid #D1D5DB !important;
+    background: #FFFFFF !important;
+    padding: 20px 24px !important;
+    margin: 0 !important;
+  }
+
+  .print-slide-page:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+
+  pre,
+  code {
+    white-space: pre-wrap !important;
+    word-break: break-word !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

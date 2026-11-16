@@ -1,0 +1,24 @@
+@model IReadOnlyList<ConceptLabMvc.Models.BookItem>
+@{
+    var keyword = ViewData["Keyword"] as string ?? "";
+}
+
+<h1>圖書查詢結果</h1>
+<form method="get" action="/Books/Index">
+    <input type="text" name="keyword" value="@keyword" placeholder="輸入書名或分類" />
+    <button type="submit">查詢</button>
+</form>
+
+@if (Model.Count == 0)
+{
+    <p>找不到符合「@keyword」的館藏圖書。</p>
+}
+else
+{
+    <ul>
+        @foreach (var book in Model)
+        {
+            <li>@book.Id · @book.Title（@book.Author / @book.Category）</li>
+        }
+    </ul>
+}
